@@ -27,21 +27,21 @@
     "@egoist/prettier-config": "1.0.0",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "aplayer": "^1.10.1",
+    "@vitejs/plugin-react": "^2.2.0",
     "prettier": "2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tsup": "6.0.1",
     "typescript": "4.5.4",
     "vite-plugin-svgr": "^2.2.2",
+    "vite": "^3.2.5",
     "vitest": "0.12.6"
   },
   "peerDependencies": {
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^2.2.0",
-    "clsx": "^1.2.1",
-    "vite": "^3.2.5"
+    "aplayer": "^1.10.1",
+    "clsx": "^1.2.1"
   }
 }
