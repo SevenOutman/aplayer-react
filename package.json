@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsup src/index.ts",
     "dev": "vite",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "prepublishOnly": "pnpm run build"
   },
   "license": "MIT",
