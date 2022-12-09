@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
 import cx from "clsx"
-import "aplayer/dist/APlayer.min.css"
 
 import { ReactComponent as IconPlay } from "../assets/play.svg"
 import { ReactComponent as IconPause } from "../assets/pause.svg"
