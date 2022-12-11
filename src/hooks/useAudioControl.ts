@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 
 function useCreateAudioElement(
   eventHanlders?: Pick<
@@ -74,9 +74,13 @@ export function useAudioControl() {
     () => audioElementRef?.current!.muted,
   )
 
-  const playAudio = useCallback((src: string) => {
+  const playAudio = useCallback(async (src: string) => {
     audioElementRef.current?.setAttribute("src", src)
-    audioElementRef.current?.play()
+    try {
+      await audioElementRef.current?.play()
+    } catch {
+      // Do nothing (for now)
+    }
   }, [])
 
   const togglePlay = useCallback(() => {
