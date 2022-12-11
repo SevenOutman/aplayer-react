@@ -105,8 +105,13 @@ export function APlayer({
           </div>
           <div className="aplayer-info">
             <div className="aplayer-music">
-              <span className="aplayer-title">{playingAudio?.name}</span>
-              <span className="aplayer-author"> - {playingAudio?.artist}</span>
+              <span className="aplayer-title">
+                {playingAudio?.name ?? "Audio name"}
+              </span>
+              <span className="aplayer-author">
+                {" "}
+                - {playingAudio?.artist ?? "Audio artist"}
+              </span>
             </div>
             <div className="aplayer-lrc"></div>
             <PlaybackControls

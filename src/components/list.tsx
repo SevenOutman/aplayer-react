@@ -41,8 +41,12 @@ export function Playlist({
               }}
             ></span>
             <span className="aplayer-list-index">{index + 1}</span>
-            <span className="aplayer-list-title">{audioInfo.name}</span>
-            <span className="aplayer-list-author">{audioInfo.artist}</span>
+            <span className="aplayer-list-title">
+              {audioInfo.name ?? "Audio name"}
+            </span>
+            <span className="aplayer-list-author">
+              {audioInfo.artist ?? "Audio artist"}
+            </span>
           </li>
         ))}
       </ol>
