@@ -25,11 +25,26 @@ export function APlayer({
   audio,
   autoplay,
 }: APlayerProps) {
-  const audioControl = useAudioControl()
-
   const [playingAudioUrl, setPlayingAudioUrl] = useState<string | undefined>(
     () => (Array.isArray(audio) ? audio[0].url : audio.url),
   )
+  const audioControl = useAudioControl({
+    onEnded(e) {
+      if (Array.isArray(audio)) {
+        const audioElement = e.target as HTMLAudioElement
+        console.log(audioElement.src)
+        const playingSongIndex = audio.findIndex(
+          (audioInfo) => audioInfo.url === audioElement.src,
+        )
+
+        console.log(playingSongIndex)
+
+        if (playingSongIndex < audio.length - 1) {
+          setPlayingAudioUrl(audio[playingSongIndex + 1].url)
+        }
+      }
+    },
+  })
 
   // When `audio` changes and `playingAudioUrl` is not included in `audio`
   // pause the playback and change `playingAudioUrl` to the first song of the new playlist

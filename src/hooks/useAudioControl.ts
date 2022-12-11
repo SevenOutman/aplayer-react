@@ -12,6 +12,7 @@ function useCreateAudioElement(
     | "onDurationChange"
     | "onTimeUpdate"
     | "onVolumeChange"
+    | "onEnded"
   >,
 ) {
   const audioElementRef = useRef<HTMLAudioElement>()
@@ -29,6 +30,7 @@ function useCreateAudioElement(
     audio.addEventListener("progress", eventHanlders?.onProgress)
     audio.addEventListener("timeupdate", eventHanlders?.onTimeUpdate)
     audio.addEventListener("volumechange", eventHanlders?.onVolumeChange)
+    audio.addEventListener("ended", eventHanlders?.onEnded)
   }
 
   useEffect(() => {
@@ -39,7 +41,15 @@ function useCreateAudioElement(
   return audioElementRef
 }
 
-export function useAudioControl() {
+type UseAudioControlOptions = Pick<
+  React.DetailedHTMLProps<
+    React.AudioHTMLAttributes<HTMLAudioElement>,
+    HTMLAudioElement
+  >,
+  "onEnded"
+>
+
+export function useAudioControl(options: UseAudioControlOptions) {
   const audioElementRef = useCreateAudioElement({
     onPlay() {
       setPlaying(true)
@@ -61,6 +71,7 @@ export function useAudioControl() {
       const audio = e.target as HTMLAudioElement
       setMuted(audio.muted)
     },
+    onEnded: options.onEnded,
   })
   const [isPlaying, setPlaying] = useState(
     () => !audioElementRef?.current?.paused,
