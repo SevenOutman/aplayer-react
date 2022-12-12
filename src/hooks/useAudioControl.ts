@@ -112,10 +112,14 @@ export function useAudioControl(options: UseAudioControlOptions) {
   }, [])
 
   const mute = useCallback(() => {
-    ;(audioElementRef?.current as HTMLAudioElement).muted = true
+    if (audioElementRef.current) {
+      audioElementRef.current.muted = true
+    }
   }, [])
   const unmute = useCallback(() => {
-    ;(audioElementRef?.current as HTMLAudioElement).muted = false
+    if (audioElementRef.current) {
+      audioElementRef.current.muted = false
+    }
   }, [])
 
   return {
