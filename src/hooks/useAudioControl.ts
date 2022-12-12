@@ -17,7 +17,7 @@ function useCreateAudioElement(
 ) {
   const audioElementRef = useRef<HTMLAudioElement>()
 
-  if (!audioElementRef.current) {
+  if (typeof document !== "undefined" && !audioElementRef.current) {
     const audio = (audioElementRef.current = document.createElement("audio"))
 
     audio.addEventListener("play", (e) => {
@@ -73,8 +73,8 @@ export function useAudioControl(options: UseAudioControlOptions) {
     },
     onEnded: options.onEnded,
   })
-  const [isPlaying, setPlaying] = useState(
-    () => !audioElementRef?.current?.paused,
+  const [isPlaying, setPlaying] = useState(() =>
+    audioElementRef.current ? !audioElementRef.current.paused : false,
   )
   const [audioDuration, setAudioDuration] = useState<number | undefined>()
   const [currentTime, setCurrentTime] = useState<number>(0)
@@ -82,7 +82,7 @@ export function useAudioControl(options: UseAudioControlOptions) {
     undefined,
   )
   const [muted, setMuted] = useState<boolean>(
-    () => audioElementRef?.current!.muted,
+    () => audioElementRef.current?.muted ?? false,
   )
 
   const playAudio = useCallback(async (src: string) => {
