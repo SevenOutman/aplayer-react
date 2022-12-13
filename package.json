@@ -17,18 +17,20 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts",
-    "dev": "vite",
+    "dev": "vite demo",
     "test": "vitest run --passWithNoTests",
     "prepublishOnly": "pnpm run build"
   },
   "license": "MIT",
   "devDependencies": {
     "@egoist/prettier-config": "1.0.0",
+    "@testing-library/react": "^13.4.0",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
     "@vitejs/plugin-react": "^2.2.0",
     "aplayer": "^1.10.1",
     "esbuild-plugin-svgr": "^1.0.1",
+    "happy-dom": "^8.1.0",
     "prettier": "2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -39,8 +39,19 @@ function useCreateAudioElement(
     audio.addEventListener("progress", options?.onProgress)
     audio.addEventListener("timeupdate", options?.onTimeUpdate)
     audio.addEventListener("volumechange", options?.onVolumeChange)
-    audio.addEventListener("ended", options?.onEnded)
   }
+
+  useEffect(() => {
+    const audio = audioElementRef.current
+
+    if (audio && options?.onEnded) {
+      audio.addEventListener("ended", options.onEnded)
+
+      return () => {
+        audio.removeEventListener("ended", options.onEnded)
+      }
+    }
+  }, [options?.onEnded])
 
   useEffect(() => {
     return () => {

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import cx from "clsx"
 
 import { ReactComponent as IconPlay } from "../assets/play.svg"
@@ -8,6 +8,7 @@ import { Playlist } from "./list"
 import { PlaybackControls } from "./controller"
 import { useAudioControl } from "../hooks/useAudioControl"
 import { defaultThemeColor } from "../constants"
+import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist"
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
@@ -24,6 +25,16 @@ type APlayerProps = {
    */
   volume?: number
 
+  /**
+   * @default "all"
+   */
+  initialLoop?: PlaylistLoop
+
+  /**
+   * @default "list"
+   */
+  initialOrder?: PlaylistOrder
+
   autoplay?: boolean
 }
 
@@ -31,58 +42,30 @@ export function APlayer({
   theme = defaultThemeColor,
   audio,
   volume = 0.7,
+  initialLoop,
+  initialOrder,
   autoplay,
 }: APlayerProps) {
-  const [playingAudioUrl, setPlayingAudioUrl] = useState<string | undefined>(
-    () => (Array.isArray(audio) ? audio[0].url : audio.url),
-  )
+  const playlist = usePlaylist(Array.isArray(audio) ? audio : [audio], {
+    initialLoop,
+    initialOrder,
+    getSongId: (song) => song.url,
+  })
+
   const audioControl = useAudioControl({
     initialVolume: volume,
-    onEnded(e) {
-      if (Array.isArray(audio)) {
-        const audioElement = e.target as HTMLAudioElement
-        console.log(audioElement.src)
-        const playingSongIndex = audio.findIndex(
-          (audioInfo) => audioInfo.url === audioElement.src,
-        )
-
-        console.log(playingSongIndex)
-
-        if (playingSongIndex < audio.length - 1) {
-          setPlayingAudioUrl(audio[playingSongIndex + 1].url)
-        }
+    onEnded() {
+      if (playlist.hasNextSong) {
+        playlist.next()
       }
     },
   })
 
-  // When `audio` changes and `playingAudioUrl` is not included in `audio`
-  // pause the playback and change `playingAudioUrl` to the first song of the new playlist
   useEffect(() => {
-    if (
-      Array.isArray(audio) &&
-      !audio.some((audioInfo) => audioInfo.url === playingAudioUrl)
-    ) {
-      setPlayingAudioUrl(audio[0].url)
-    } else if (!Array.isArray(audio) && audio.url !== playingAudioUrl) {
-      setPlayingAudioUrl(audio.url)
+    if (playlist.currentSong) {
+      audioControl.playAudio(playlist.currentSong.url)
     }
-  }, [audio])
-
-  useEffect(() => {
-    if (playingAudioUrl) {
-      audioControl.playAudio(playingAudioUrl)
-    }
-  }, [playingAudioUrl])
-
-  const playingAudio = useMemo<AudioInfo | undefined>(() => {
-    if (typeof playingAudioUrl === "undefined") return undefined
-
-    if (Array.isArray(audio)) {
-      return audio.find((audioInfo) => audioInfo.url === playingAudioUrl)
-    }
-
-    return audio.url === playingAudioUrl ? audio : undefined
-  }, [audio, playingAudioUrl])
+  }, [playlist.currentSong])
 
   const hasPlaylist = Array.isArray(audio)
 
@@ -99,7 +82,7 @@ export function APlayer({
           <div
             className="aplayer-pic"
             style={{
-              backgroundImage: `url("${playingAudio?.cover}")`,
+              backgroundImage: `url("${playlist.currentSong?.cover}")`,
             }}
           >
             <div
@@ -115,11 +98,11 @@ export function APlayer({
           <div className="aplayer-info">
             <div className="aplayer-music">
               <span className="aplayer-title">
-                {playingAudio?.name ?? "Audio name"}
+                {playlist.currentSong?.name ?? "Audio name"}
               </span>
               <span className="aplayer-author">
                 {" "}
-                - {playingAudio?.artist ?? "Audio artist"}
+                - {playlist.currentSong?.artist ?? "Audio artist"}
               </span>
             </div>
             <div className="aplayer-lrc"></div>
@@ -130,12 +113,16 @@ export function APlayer({
               onToggleMuted={() =>
                 audioControl.muted ? audioControl.unmute() : audioControl.mute()
               }
-              themeColor={playingAudio?.theme ?? theme}
+              themeColor={playlist.currentSong?.theme ?? theme}
               currentTime={audioControl.currentTime}
               audioDurationSeconds={audioControl.audioDuration}
               bufferedSeconds={audioControl.bufferedSeconds}
               onSeek={(second) => audioControl.seek(second)}
               onToggleMenu={() => setPlaylistOpen((open) => !open)}
+              order={playlist.order}
+              onOrderChange={playlist.setOrder}
+              loop={playlist.loop}
+              onLoopChange={playlist.setLoop}
             />
           </div>
           <div className="aplayer-notice"></div>
@@ -145,8 +132,8 @@ export function APlayer({
           <Playlist
             open={isPlaylistOpen}
             audio={audio}
-            playingAudioUrl={playingAudioUrl}
-            onPlayAudio={(audioInfo) => setPlayingAudioUrl(audioInfo.url)}
+            playingAudioUrl={playlist.currentSong.url}
+            onPlayAudio={(audioInfo) => playlist.prioritize(audioInfo)}
           />
         ) : null}
       </div>

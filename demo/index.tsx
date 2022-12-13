@@ -18,6 +18,20 @@ const playlist1 = [
     cover:
       "https://p1.music.126.net/AnR2ejcBgGnOJXPsytivBQ==/109951164922366027.jpg",
   },
+  {
+    name: "滥俗的歌",
+    artist: "汉堡黄",
+    url: "https://music.163.com/song/media/outer/url?id=1923210613",
+    cover:
+      "https://p1.music.126.net/uOvEut2NG6enWVM1s_lJZQ==/109951167656922852.jpg",
+  },
+  {
+    name: "海辺の丘",
+    artist: "小瀬村晶/信澤宣明",
+    url: "https://music.163.com/song/media/outer/url?id=1331298993",
+    cover:
+      "https://p1.music.126.net/RzAd3yEwGX6PW7LEQtK6mA==/109951163707194914.jpg",
+  },
 ]
 
 const playlist2 = [
@@ -43,7 +57,12 @@ function App() {
         justifyContent: "center",
       }}
     >
-      <APlayer audio={playlist} autoplay />
+      <APlayer
+        audio={playlist}
+        autoplay
+        initialLoop="all"
+        initialOrder="random"
+      />
       <div>
         <button onClick={() => setPlaylist(playlist1)}>Playlist 1</button>
         <button onClick={() => setPlaylist(playlist2)}>Playlist 2</button>
