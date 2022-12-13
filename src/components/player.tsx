@@ -17,18 +17,27 @@ type APlayerProps = {
 
   theme?: string
 
+  /**
+   * Initial volume
+   *
+   * @default 0.7
+   */
+  volume?: number
+
   autoplay?: boolean
 }
 
 export function APlayer({
   theme = defaultThemeColor,
   audio,
+  volume = 0.7,
   autoplay,
 }: APlayerProps) {
   const [playingAudioUrl, setPlayingAudioUrl] = useState<string | undefined>(
     () => (Array.isArray(audio) ? audio[0].url : audio.url),
   )
   const audioControl = useAudioControl({
+    initialVolume: volume,
     onEnded(e) {
       if (Array.isArray(audio)) {
         const audioElement = e.target as HTMLAudioElement
@@ -115,6 +124,8 @@ export function APlayer({
             </div>
             <div className="aplayer-lrc"></div>
             <PlaybackControls
+              volume={audioControl.volume}
+              onChangeVolume={audioControl.updateVolume}
               muted={audioControl.muted}
               onToggleMuted={() =>
                 audioControl.muted ? audioControl.unmute() : audioControl.mute()

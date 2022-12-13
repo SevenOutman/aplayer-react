@@ -1,36 +1,45 @@
 import React, { useCallback, useEffect, useRef, useState } from "react"
 
+type CreateAudioElementOptions = {
+  initialVolume?: number
+}
+
 function useCreateAudioElement(
-  eventHanlders?: Pick<
-    React.DetailedHTMLProps<
-      React.AudioHTMLAttributes<HTMLAudioElement>,
-      HTMLAudioElement
+  options?: CreateAudioElementOptions &
+    Pick<
+      React.DetailedHTMLProps<
+        React.AudioHTMLAttributes<HTMLAudioElement>,
+        HTMLAudioElement
+      >,
+      | "onPlay"
+      | "onPause"
+      | "onProgress"
+      | "onDurationChange"
+      | "onTimeUpdate"
+      | "onVolumeChange"
+      | "onEnded"
     >,
-    | "onPlay"
-    | "onPause"
-    | "onProgress"
-    | "onDurationChange"
-    | "onTimeUpdate"
-    | "onVolumeChange"
-    | "onEnded"
-  >,
 ) {
   const audioElementRef = useRef<HTMLAudioElement>()
 
   if (typeof document !== "undefined" && !audioElementRef.current) {
     const audio = (audioElementRef.current = document.createElement("audio"))
 
+    if (typeof options?.initialVolume !== "undefined") {
+      audio.volume = options.initialVolume
+    }
+
     audio.addEventListener("play", (e) => {
-      eventHanlders?.onPlay?.(e)
+      options?.onPlay?.(e)
     })
     audio.addEventListener("pause", (e) => {
-      eventHanlders?.onPause?.(e)
+      options?.onPause?.(e)
     })
-    audio.addEventListener("durationchange", eventHanlders?.onDurationChange)
-    audio.addEventListener("progress", eventHanlders?.onProgress)
-    audio.addEventListener("timeupdate", eventHanlders?.onTimeUpdate)
-    audio.addEventListener("volumechange", eventHanlders?.onVolumeChange)
-    audio.addEventListener("ended", eventHanlders?.onEnded)
+    audio.addEventListener("durationchange", options?.onDurationChange)
+    audio.addEventListener("progress", options?.onProgress)
+    audio.addEventListener("timeupdate", options?.onTimeUpdate)
+    audio.addEventListener("volumechange", options?.onVolumeChange)
+    audio.addEventListener("ended", options?.onEnded)
   }
 
   useEffect(() => {
@@ -41,16 +50,18 @@ function useCreateAudioElement(
   return audioElementRef
 }
 
-type UseAudioControlOptions = Pick<
-  React.DetailedHTMLProps<
-    React.AudioHTMLAttributes<HTMLAudioElement>,
-    HTMLAudioElement
-  >,
-  "onEnded"
->
+type UseAudioControlOptions = CreateAudioElementOptions &
+  Pick<
+    React.DetailedHTMLProps<
+      React.AudioHTMLAttributes<HTMLAudioElement>,
+      HTMLAudioElement
+    >,
+    "onEnded"
+  >
 
 export function useAudioControl(options: UseAudioControlOptions) {
   const audioElementRef = useCreateAudioElement({
+    initialVolume: options.initialVolume,
     onPlay() {
       setPlaying(true)
     },
@@ -69,6 +80,7 @@ export function useAudioControl(options: UseAudioControlOptions) {
     },
     onVolumeChange(e) {
       const audio = e.target as HTMLAudioElement
+      setVolume(audio.volume)
       setMuted(audio.muted)
     },
     onEnded: options.onEnded,
@@ -81,6 +93,7 @@ export function useAudioControl(options: UseAudioControlOptions) {
   const [bufferedSeconds, setBufferedSeconds] = useState<number | undefined>(
     undefined,
   )
+  const [volume, setVolume] = useState(options?.initialVolume ?? 0.7)
   const [muted, setMuted] = useState<boolean>(
     () => audioElementRef.current?.muted ?? false,
   )
@@ -122,7 +135,15 @@ export function useAudioControl(options: UseAudioControlOptions) {
     }
   }, [])
 
+  const updateVolume = useCallback((value: number) => {
+    if (audioElementRef.current) {
+      audioElementRef.current.volume = value
+    }
+  }, [])
+
   return {
+    volume,
+    updateVolume,
     muted,
     mute,
     unmute,
