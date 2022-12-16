@@ -55,6 +55,13 @@ function useCreateAudioElement(
 
   useEffect(() => {
     return () => {
+      const audio = audioElementRef.current
+      // Properly stop the <audio> playing
+      // https://stackoverflow.com/a/14836099/6840562
+      if (audio) {
+        audio.pause()
+        audio.currentTime = 0
+      }
       audioElementRef.current = undefined
     }
   }, [])
