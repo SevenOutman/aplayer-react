@@ -17,7 +17,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup src/index.ts",
-    "dev": "vite demo",
+    "dev": "vite",
     "test": "vitest run --passWithNoTests",
     "prepublishOnly": "pnpm run build"
   },
