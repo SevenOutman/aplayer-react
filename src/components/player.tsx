@@ -44,7 +44,6 @@ export function APlayer({
   volume = 0.7,
   initialLoop,
   initialOrder,
-  autoplay,
 }: APlayerProps) {
   const playlist = usePlaylist(Array.isArray(audio) ? audio : [audio], {
     initialLoop,
@@ -70,7 +69,7 @@ export function APlayer({
     if (playlist.currentSong) {
       audioControl.playAudio(playlist.currentSong.url)
     }
-  }, [playlist.currentSong])
+  }, [playlist.currentSong, audioControl])
 
   const hasPlaylist = Array.isArray(audio)
 

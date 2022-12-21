@@ -57,7 +57,7 @@ export function usePlaylist<T, K>(
     } else {
       setCurrentSong(list[0])
     }
-  }, [list])
+  }, [list, getSongId, currentSong])
 
   const nextSong = useMemo(() => {
     const currentSongIndex = list.indexOf(currentSong)

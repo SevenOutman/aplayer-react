@@ -164,14 +164,17 @@ export function useAudioControl(options: UseAudioControlOptions) {
     () => audioElementRef.current?.muted ?? false,
   )
 
-  const playAudio = useCallback(async (src: string) => {
-    audioElementRef.current?.setAttribute("src", src)
-    try {
-      await audioElementRef.current?.play()
-    } catch {
-      // Do nothing (for now)
-    }
-  }, [])
+  const playAudio = useCallback(
+    async (src: string) => {
+      audioElementRef.current?.setAttribute("src", src)
+      try {
+        await audioElementRef.current?.play()
+      } catch {
+        // Do nothing (for now)
+      }
+    },
+    [audioElementRef],
+  )
 
   const togglePlay = useCallback(() => {
     const audio = audioElementRef.current
@@ -184,28 +187,34 @@ export function useAudioControl(options: UseAudioControlOptions) {
     } else {
       audio.pause()
     }
-  }, [])
+  }, [audioElementRef])
 
-  const seek = useCallback((second: number) => {
-    ;(audioElementRef.current as HTMLAudioElement).currentTime = second
-  }, [])
+  const seek = useCallback(
+    (second: number) => {
+      ;(audioElementRef.current as HTMLAudioElement).currentTime = second
+    },
+    [audioElementRef],
+  )
 
   const mute = useCallback(() => {
     if (audioElementRef.current) {
       audioElementRef.current.muted = true
     }
-  }, [])
+  }, [audioElementRef])
   const unmute = useCallback(() => {
     if (audioElementRef.current) {
       audioElementRef.current.muted = false
     }
-  }, [])
+  }, [audioElementRef])
 
-  const updateVolume = useCallback((value: number) => {
-    if (audioElementRef.current) {
-      audioElementRef.current.volume = value
-    }
-  }, [])
+  const updateVolume = useCallback(
+    (value: number) => {
+      if (audioElementRef.current) {
+        audioElementRef.current.volume = value
+      }
+    },
+    [audioElementRef],
+  )
 
   return {
     volume,
