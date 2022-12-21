@@ -1,13 +1,13 @@
-import React, { useCallback, useRef } from "react"
-import { ReactComponent as IconLoading } from "../assets/loading.svg"
+import React, { useCallback, useRef } from "react";
+import { ReactComponent as IconLoading } from "../assets/loading.svg";
 
 type ProgressBarProps = {
-  themeColor: string
-  bufferedPercentage: number
-  playedPercentage: number
+  themeColor: string;
+  bufferedPercentage: number;
+  playedPercentage: number;
 
-  onSeek?: (percentage: number) => void
-}
+  onSeek?: (percentage: number) => void;
+};
 
 export function ProgressBar({
   themeColor,
@@ -15,18 +15,18 @@ export function ProgressBar({
   playedPercentage,
   onSeek,
 }: ProgressBarProps) {
-  const wrapperRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      const barDimensions = wrapperRef.current?.getBoundingClientRect()
-      const deltaX = e.clientX - barDimensions.x
-      const percentage = deltaX / barDimensions?.width
+      const barDimensions = wrapperRef.current?.getBoundingClientRect();
+      const deltaX = e.clientX - barDimensions.x;
+      const percentage = deltaX / barDimensions?.width;
 
-      onSeek?.(percentage)
+      onSeek?.(percentage);
     },
-    [onSeek],
-  )
+    [onSeek]
+  );
 
   return (
     <div
@@ -57,5 +57,5 @@ export function ProgressBar({
         </div>
       </div>
     </div>
-  )
+  );
 }

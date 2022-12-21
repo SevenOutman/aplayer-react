@@ -1,13 +1,13 @@
-import cx from "clsx"
-import { defaultThemeColor } from "../constants"
-import type { AudioInfo } from "../types"
+import cx from "clsx";
+import { defaultThemeColor } from "../constants";
+import type { AudioInfo } from "../types";
 
 type PlaylistProps = {
-  open: boolean
-  audio: AudioInfo[]
-  playingAudioUrl?: string
-  onPlayAudio?: (audio: AudioInfo) => void
-}
+  open: boolean;
+  audio: AudioInfo[];
+  playingAudioUrl?: string;
+  onPlayAudio?: (audio: AudioInfo) => void;
+};
 
 export function Playlist({
   open,
@@ -30,7 +30,7 @@ export function Playlist({
             })}
             onClick={() => {
               if (audioInfo.url !== playingAudioUrl) {
-                onPlayAudio?.(audioInfo)
+                onPlayAudio?.(audioInfo);
               }
             }}
           >
@@ -51,5 +51,5 @@ export function Playlist({
         ))}
       </ol>
     </div>
-  )
+  );
 }

@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@egoist/prettier-config': 1.0.0
   '@testing-library/react': ^13.4.0
   '@types/react': ^18.0.26
   '@types/react-dom': ^18.0.9
@@ -28,7 +27,6 @@ dependencies:
   clsx: 1.2.1
 
 devDependencies:
-  '@egoist/prettier-config': 1.0.0
   '@testing-library/react': 13.4.0_biqbaboplfbrettd7655fr4n2y
   '@types/react': 18.0.26
   '@types/react-dom': 18.0.9
@@ -342,10 +340,6 @@ packages:
       '@babel/helper-string-parser': 7.19.4
       '@babel/helper-validator-identifier': 7.19.1
       to-fast-properties: 2.0.0
-    dev: true
-
-  /@egoist/prettier-config/1.0.0:
-    resolution: {integrity: sha512-D1Tp9Jv4aVoEo3cOAO966gFCI0wx/1lZ6sEHX8uMAfyVxuxD2+knGxhfGlb/FNLxWV3ifSI5hOmB/zFfsi7Rzw==}
     dev: true
 
   /@esbuild/android-arm/0.15.18:

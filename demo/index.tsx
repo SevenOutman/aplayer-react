@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { createRoot } from "react-dom/client"
-import "aplayer/dist/APlayer.min.css"
-import { APlayer } from "../src"
+import { useState } from "react";
+import { createRoot } from "react-dom/client";
+import "aplayer/dist/APlayer.min.css";
+import { APlayer } from "../src";
 
 const playlist1 = [
   {
@@ -32,7 +32,7 @@ const playlist1 = [
     cover:
       "https://p1.music.126.net/RzAd3yEwGX6PW7LEQtK6mA==/109951163707194914.jpg",
   },
-]
+];
 
 const playlist2 = [
   {
@@ -42,10 +42,10 @@ const playlist2 = [
     cover:
       "https://p1.music.126.net/uOvEut2NG6enWVM1s_lJZQ==/109951167656922852.jpg",
   },
-]
+];
 
 function App() {
-  const [playlist, setPlaylist] = useState(playlist1)
+  const [playlist, setPlaylist] = useState(playlist1);
   return (
     <div
       style={{
@@ -68,7 +68,7 @@ function App() {
         <button onClick={() => setPlaylist(playlist2)}>Playlist 2</button>
       </div>
     </div>
-  )
+  );
 }
 
-createRoot(document.getElementById("root") as HTMLElement).render(<App />)
+createRoot(document.getElementById("root") as HTMLElement).render(<App />);

@@ -1,42 +1,42 @@
-import { useEffect, useState } from "react"
-import cx from "clsx"
+import { useEffect, useState } from "react";
+import cx from "clsx";
 
-import { ReactComponent as IconPlay } from "../assets/play.svg"
-import { ReactComponent as IconPause } from "../assets/pause.svg"
-import type { AudioInfo } from "../types"
-import { Playlist } from "./list"
-import { PlaybackControls } from "./controller"
-import { useAudioControl } from "../hooks/useAudioControl"
-import { defaultThemeColor } from "../constants"
-import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist"
+import { ReactComponent as IconPlay } from "../assets/play.svg";
+import { ReactComponent as IconPause } from "../assets/pause.svg";
+import type { AudioInfo } from "../types";
+import { Playlist } from "./list";
+import { PlaybackControls } from "./controller";
+import { useAudioControl } from "../hooks/useAudioControl";
+import { defaultThemeColor } from "../constants";
+import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist";
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
  */
 type APlayerProps = {
-  audio: AudioInfo | AudioInfo[]
+  audio: AudioInfo | AudioInfo[];
 
-  theme?: string
+  theme?: string;
 
   /**
    * Initial volume
    *
    * @default 0.7
    */
-  volume?: number
+  volume?: number;
 
   /**
    * @default "all"
    */
-  initialLoop?: PlaylistLoop
+  initialLoop?: PlaylistLoop;
 
   /**
    * @default "list"
    */
-  initialOrder?: PlaylistOrder
+  initialOrder?: PlaylistOrder;
 
-  autoplay?: boolean
-}
+  autoplay?: boolean;
+};
 
 export function APlayer({
   theme = defaultThemeColor,
@@ -49,31 +49,31 @@ export function APlayer({
     initialLoop,
     initialOrder,
     getSongId: (song) => song.url,
-  })
+  });
 
   const audioControl = useAudioControl({
     initialVolume: volume,
     onError() {
       if (playlist.hasNextSong) {
-        playlist.next()
+        playlist.next();
       }
     },
     onEnded() {
       if (playlist.hasNextSong) {
-        playlist.next()
+        playlist.next();
       }
     },
-  })
+  });
 
   useEffect(() => {
     if (playlist.currentSong) {
-      audioControl.playAudio(playlist.currentSong.url)
+      audioControl.playAudio(playlist.currentSong.url);
     }
-  }, [playlist.currentSong, audioControl])
+  }, [playlist.currentSong, audioControl]);
 
-  const hasPlaylist = Array.isArray(audio)
+  const hasPlaylist = Array.isArray(audio);
 
-  const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist)
+  const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
 
   return (
     <div style={{ width: 600 }}>
@@ -93,7 +93,7 @@ export function APlayer({
             <div
               className={cx(
                 "aplayer-button",
-                audioControl.isPlaying ? "aplayer-pause" : "aplayer-play",
+                audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
               )}
               onClick={() => audioControl.togglePlay()}
             >
@@ -143,5 +143,5 @@ export function APlayer({
         ) : null}
       </div>
     </div>
-  )
+  );
 }

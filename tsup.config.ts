@@ -1,5 +1,5 @@
-import { defineConfig } from "tsup"
-import svgrPlugin from "esbuild-plugin-svgr"
+import { defineConfig } from "tsup";
+import svgrPlugin from "esbuild-plugin-svgr";
 
 export default defineConfig({
   format: ["cjs", "esm"],
@@ -11,6 +11,6 @@ export default defineConfig({
     }),
   ],
   esbuildOptions: (options) => {
-    options.jsx = "automatic"
+    options.jsx = "automatic";
   },
-})
+});
