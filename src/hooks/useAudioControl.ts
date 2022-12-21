@@ -20,6 +20,7 @@ function useCreateAudioElement(
       | "onEnded"
       | "onWaiting"
       | "onCanPlay"
+      | "onError"
     >,
 ) {
   const audioElementRef = useRef<HTMLAudioElement>()
@@ -54,6 +55,18 @@ function useCreateAudioElement(
       }
     }
   }, [options?.onWaiting])
+
+  useEffect(() => {
+    const audio = audioElementRef.current
+
+    if (audio && options?.onError) {
+      audio.addEventListener("error", options.onError)
+
+      return () => {
+        audio.removeEventListener("error", options.onError)
+      }
+    }
+  }, [options?.onError])
 
   useEffect(() => {
     const audio = audioElementRef.current
@@ -100,7 +113,7 @@ type UseAudioControlOptions = CreateAudioElementOptions &
       React.AudioHTMLAttributes<HTMLAudioElement>,
       HTMLAudioElement
     >,
-    "onEnded"
+    "onEnded" | "onError"
   >
 
 export function useAudioControl(options: UseAudioControlOptions) {
@@ -133,6 +146,7 @@ export function useAudioControl(options: UseAudioControlOptions) {
     onCanPlay() {
       setLoading(false)
     },
+    onError: options.onError,
     onEnded: options.onEnded,
   })
   const [isLoading, setLoading] = useState(false)

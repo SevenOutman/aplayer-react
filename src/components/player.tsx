@@ -54,6 +54,11 @@ export function APlayer({
 
   const audioControl = useAudioControl({
     initialVolume: volume,
+    onError() {
+      if (playlist.hasNextSong) {
+        playlist.next()
+      }
+    },
     onEnded() {
       if (playlist.hasNextSong) {
         playlist.next()
