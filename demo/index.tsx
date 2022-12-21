@@ -19,11 +19,11 @@ const playlist1 = [
       "https://p1.music.126.net/AnR2ejcBgGnOJXPsytivBQ==/109951164922366027.jpg",
   },
   {
-    name: "滥俗的歌",
-    artist: "汉堡黄",
-    url: "https://music.163.com/song/media/outer/url?id=1923210613",
+    name: "エカテリーナのための協奏曲",
+    artist: "松下奈緒",
+    url: "https://music.163.com/song/media/outer/url?id=22825753",
     cover:
-      "https://p1.music.126.net/uOvEut2NG6enWVM1s_lJZQ==/109951167656922852.jpg",
+      "https://p2.music.126.net/Gl5oBQl-8kNeqzvTB3wvag==/109951166202756701.jpg",
   },
   {
     name: "海辺の丘",

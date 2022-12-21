@@ -75,6 +75,7 @@ export function APlayer({
     <div style={{ width: 600 }}>
       <div
         className={cx("aplayer", {
+          "aplayer-loading": audioControl.isLoading,
           "aplayer-withlist": hasPlaylist,
         })}
       >

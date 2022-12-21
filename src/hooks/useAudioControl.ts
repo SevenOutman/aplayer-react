@@ -18,6 +18,8 @@ function useCreateAudioElement(
       | "onTimeUpdate"
       | "onVolumeChange"
       | "onEnded"
+      | "onWaiting"
+      | "onCanPlay"
     >,
 ) {
   const audioElementRef = useRef<HTMLAudioElement>()
@@ -40,6 +42,30 @@ function useCreateAudioElement(
     audio.addEventListener("timeupdate", options?.onTimeUpdate)
     audio.addEventListener("volumechange", options?.onVolumeChange)
   }
+
+  useEffect(() => {
+    const audio = audioElementRef.current
+
+    if (audio && options?.onWaiting) {
+      audio.addEventListener("waiting", options.onWaiting)
+
+      return () => {
+        audio.removeEventListener("waiting", options.onWaiting)
+      }
+    }
+  }, [options?.onWaiting])
+
+  useEffect(() => {
+    const audio = audioElementRef.current
+
+    if (audio && options?.onCanPlay) {
+      audio.addEventListener("canplay", options.onCanPlay)
+
+      return () => {
+        audio.removeEventListener("canplay", options.onCanPlay)
+      }
+    }
+  }, [options?.onCanPlay])
 
   useEffect(() => {
     const audio = audioElementRef.current
@@ -101,8 +127,16 @@ export function useAudioControl(options: UseAudioControlOptions) {
       setVolume(audio.volume)
       setMuted(audio.muted)
     },
+    onWaiting() {
+      setLoading(true)
+    },
+    onCanPlay() {
+      setLoading(false)
+    },
     onEnded: options.onEnded,
   })
+  const [isLoading, setLoading] = useState(false)
+
   const [isPlaying, setPlaying] = useState(() =>
     audioElementRef.current ? !audioElementRef.current.paused : false,
   )
@@ -172,5 +206,6 @@ export function useAudioControl(options: UseAudioControlOptions) {
     playAudio,
     togglePlay,
     seek,
+    isLoading,
   }
 }
