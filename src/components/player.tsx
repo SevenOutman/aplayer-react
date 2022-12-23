@@ -152,7 +152,7 @@ export function APlayer({
       {hasPlaylist ? (
         <Playlist
           open={isPlaylistOpen}
-          audio={audio}
+          audio={Array.isArray(audio) ? audio : [audio]}
           playingAudioUrl={playlist.currentSong.url}
           onPlayAudio={(audioInfo) => playlist.prioritize(audioInfo)}
         />
