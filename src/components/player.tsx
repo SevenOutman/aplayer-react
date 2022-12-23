@@ -90,75 +90,73 @@ export function APlayer({
   const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
 
   return (
-    <div style={{ width: 600 }}>
-      <div
-        className={cx("aplayer aplayer-withlrc", {
-          "aplayer-loading": audioControl.isLoading,
-          "aplayer-withlist": hasPlaylist,
-        })}
-      >
-        <div className="aplayer-body">
+    <div
+      className={cx("aplayer aplayer-withlrc", {
+        "aplayer-loading": audioControl.isLoading,
+        "aplayer-withlist": hasPlaylist,
+      })}
+    >
+      <div className="aplayer-body">
+        <div
+          className="aplayer-pic"
+          style={{
+            backgroundImage: `url("${playlist.currentSong?.cover}")`,
+          }}
+        >
           <div
-            className="aplayer-pic"
-            style={{
-              backgroundImage: `url("${playlist.currentSong?.cover}")`,
-            }}
+            className={cx(
+              "aplayer-button",
+              audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
+            )}
+            onClick={() => audioControl.togglePlay()}
           >
-            <div
-              className={cx(
-                "aplayer-button",
-                audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
-              )}
-              onClick={() => audioControl.togglePlay()}
-            >
-              {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
-            </div>
+            {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
           </div>
-          <div className="aplayer-info">
-            <div className="aplayer-music">
-              <span className="aplayer-title">
-                {playlist.currentSong?.name ?? "Audio name"}
-              </span>
-              <span className="aplayer-author">
-                {" "}
-                - {playlist.currentSong?.artist ?? "Audio artist"}
-              </span>
-            </div>
-            <Lyrics
-              lrcText={playlist.currentSong.lrc}
-              currentTime={audioControl.currentTime}
-            />
-            <PlaybackControls
-              volume={audioControl.volume}
-              onChangeVolume={audioControl.updateVolume}
-              muted={audioControl.muted}
-              onToggleMuted={() =>
-                audioControl.muted ? audioControl.unmute() : audioControl.mute()
-              }
-              themeColor={playlist.currentSong?.theme ?? theme}
-              currentTime={audioControl.currentTime}
-              audioDurationSeconds={audioControl.audioDuration}
-              bufferedSeconds={audioControl.bufferedSeconds}
-              onSeek={(second) => audioControl.seek(second)}
-              onToggleMenu={() => setPlaylistOpen((open) => !open)}
-              order={playlist.order}
-              onOrderChange={playlist.setOrder}
-              loop={playlist.loop}
-              onLoopChange={playlist.setLoop}
-            />
-          </div>
-          <div className="aplayer-notice"></div>
-          <div className="aplayer-miniswitcher"></div>
         </div>
-        {hasPlaylist ? (
-          <Playlist
-            open={isPlaylistOpen}
-            audio={audio}
-            playingAudioUrl={playlist.currentSong.url}
-            onPlayAudio={(audioInfo) => playlist.prioritize(audioInfo)}
+        <div className="aplayer-info">
+          <div className="aplayer-music">
+            <span className="aplayer-title">
+              {playlist.currentSong?.name ?? "Audio name"}
+            </span>
+            <span className="aplayer-author">
+              {" "}
+              - {playlist.currentSong?.artist ?? "Audio artist"}
+            </span>
+          </div>
+          <Lyrics
+            lrcText={playlist.currentSong.lrc}
+            currentTime={audioControl.currentTime}
           />
-        ) : null}
+          <PlaybackControls
+            volume={audioControl.volume}
+            onChangeVolume={audioControl.updateVolume}
+            muted={audioControl.muted}
+            onToggleMuted={() =>
+              audioControl.muted ? audioControl.unmute() : audioControl.mute()
+            }
+            themeColor={playlist.currentSong?.theme ?? theme}
+            currentTime={audioControl.currentTime}
+            audioDurationSeconds={audioControl.audioDuration}
+            bufferedSeconds={audioControl.bufferedSeconds}
+            onSeek={(second) => audioControl.seek(second)}
+            onToggleMenu={() => setPlaylistOpen((open) => !open)}
+            order={playlist.order}
+            onOrderChange={playlist.setOrder}
+            loop={playlist.loop}
+            onLoopChange={playlist.setLoop}
+          />
+        </div>
+        <div className="aplayer-notice"></div>
+        <div className="aplayer-miniswitcher"></div>
       </div>
+      {hasPlaylist ? (
+        <Playlist
+          open={isPlaylistOpen}
+          audio={audio}
+          playingAudioUrl={playlist.currentSong.url}
+          onPlayAudio={(audioInfo) => playlist.prioritize(audioInfo)}
+        />
+      ) : null}
     </div>
   );
 }
