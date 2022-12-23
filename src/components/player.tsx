@@ -9,6 +9,7 @@ import { PlaybackControls } from "./controller";
 import { useAudioControl } from "../hooks/useAudioControl";
 import { defaultThemeColor } from "../constants";
 import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist";
+import { Lyrics } from "./lyrics";
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
@@ -91,7 +92,7 @@ export function APlayer({
   return (
     <div style={{ width: 600 }}>
       <div
-        className={cx("aplayer", {
+        className={cx("aplayer aplayer-withlrc", {
           "aplayer-loading": audioControl.isLoading,
           "aplayer-withlist": hasPlaylist,
         })}
@@ -123,7 +124,10 @@ export function APlayer({
                 - {playlist.currentSong?.artist ?? "Audio artist"}
               </span>
             </div>
-            <div className="aplayer-lrc"></div>
+            <Lyrics
+              lrcText={playlist.currentSong.lrc}
+              currentTime={audioControl.currentTime}
+            />
             <PlaybackControls
               volume={audioControl.volume}
               onChangeVolume={audioControl.updateVolume}
