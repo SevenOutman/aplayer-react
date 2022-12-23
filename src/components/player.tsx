@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import cx from "clsx";
 
 import { ReactComponent as IconPlay } from "../assets/play.svg";
@@ -35,7 +35,7 @@ type APlayerProps = {
    */
   initialOrder?: PlaylistOrder;
 
-  autoplay?: boolean;
+  autoPlay?: boolean;
 };
 
 export function APlayer({
@@ -44,7 +44,11 @@ export function APlayer({
   volume = 0.7,
   initialLoop,
   initialOrder,
+  autoPlay = false,
 }: APlayerProps) {
+  const autoPlayRef = useRef(autoPlay);
+  const isInitialPhaseRef = useRef(true);
+
   const playlist = usePlaylist(Array.isArray(audio) ? audio : [audio], {
     initialLoop,
     initialOrder,
@@ -67,7 +71,14 @@ export function APlayer({
 
   useEffect(() => {
     if (playlist.currentSong) {
-      audioControl.playAudio(playlist.currentSong.url);
+      if (isInitialPhaseRef.current) {
+        isInitialPhaseRef.current = false;
+        if (autoPlayRef.current) {
+          audioControl.playAudio(playlist.currentSong.url);
+        }
+      } else {
+        audioControl.playAudio(playlist.currentSong.url);
+      }
     }
   }, [playlist.currentSong, audioControl]);
 

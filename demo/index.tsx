@@ -57,12 +57,7 @@ function App() {
         justifyContent: "center",
       }}
     >
-      <APlayer
-        audio={playlist}
-        autoplay
-        initialLoop="all"
-        initialOrder="random"
-      />
+      <APlayer audio={playlist} initialLoop="all" initialOrder="random" />
       <div>
         <button onClick={() => setPlaylist(playlist1)}>Playlist 1</button>
         <button onClick={() => setPlaylist(playlist2)}>Playlist 2</button>
