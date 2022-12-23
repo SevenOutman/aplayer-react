@@ -19,6 +19,7 @@ type PlaylistState<T> = Readonly<{
   setOrder: (order: PlaylistOrder) => void;
   loop: PlaylistLoop;
   setLoop: (loop: PlaylistLoop) => void;
+  length: number;
 }>;
 
 /**
@@ -91,5 +92,6 @@ export function usePlaylist<T, K>(
     setOrder,
     loop,
     setLoop,
+    length: list.length,
   };
 }

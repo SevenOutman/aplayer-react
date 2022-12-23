@@ -46,9 +46,6 @@ export function APlayer({
   initialOrder,
   autoPlay = false,
 }: APlayerProps) {
-  const autoPlayRef = useRef(autoPlay);
-  const isInitialPhaseRef = useRef(true);
-
   const playlist = usePlaylist(Array.isArray(audio) ? audio : [audio], {
     initialLoop,
     initialOrder,
@@ -70,19 +67,24 @@ export function APlayer({
   });
 
   useEffect(() => {
-    if (playlist.currentSong) {
-      if (isInitialPhaseRef.current) {
-        isInitialPhaseRef.current = false;
-        if (autoPlayRef.current) {
-          audioControl.playAudio(playlist.currentSong.url);
-        }
-      } else {
+    if (autoPlay) {
+      audioControl.playAudio(playlist.currentSong.url);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isInitialEffectRef = useRef(true);
+  useEffect(() => {
+    if (isInitialEffectRef.current) {
+      isInitialEffectRef.current = false;
+    } else {
+      if (playlist.currentSong) {
         audioControl.playAudio(playlist.currentSong.url);
       }
     }
-  }, [playlist.currentSong, audioControl]);
+  }, [playlist.currentSong, audioControl.playAudio]);
 
-  const hasPlaylist = Array.isArray(audio);
+  const hasPlaylist = playlist.length > 1;
 
   const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
 
