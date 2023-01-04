@@ -7,6 +7,7 @@ type PlaylistProps = {
   audio: AudioInfo[];
   playingAudioUrl?: string;
   onPlayAudio?: (audio: AudioInfo) => void;
+  themeColor?: string;
 };
 
 export function Playlist({
@@ -14,6 +15,7 @@ export function Playlist({
   audio,
   playingAudioUrl,
   onPlayAudio,
+  themeColor = defaultThemeColor,
 }: PlaylistProps) {
   return (
     <div
@@ -37,7 +39,7 @@ export function Playlist({
             <span
               className="aplayer-list-cur"
               style={{
-                backgroundColor: audioInfo.theme ?? defaultThemeColor,
+                backgroundColor: themeColor,
               }}
             ></span>
             <span className="aplayer-list-index">{index + 1}</span>

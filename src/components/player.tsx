@@ -10,6 +10,7 @@ import { useAudioControl } from "../hooks/useAudioControl";
 import { defaultThemeColor } from "../constants";
 import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist";
 import { Lyrics } from "./lyrics";
+import { useThemeColor } from "../hooks/useThemeColor";
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
@@ -89,6 +90,8 @@ export function APlayer({
 
   const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
 
+  const themeColor = useThemeColor(playlist.currentSong, theme);
+
   return (
     <div
       className={cx("aplayer aplayer-withlrc", {
@@ -134,7 +137,7 @@ export function APlayer({
             onToggleMuted={() =>
               audioControl.muted ? audioControl.unmute() : audioControl.mute()
             }
-            themeColor={playlist.currentSong?.theme ?? theme}
+            themeColor={themeColor}
             currentTime={audioControl.currentTime}
             audioDurationSeconds={audioControl.audioDuration}
             bufferedSeconds={audioControl.bufferedSeconds}
@@ -151,6 +154,7 @@ export function APlayer({
       </div>
       {hasPlaylist ? (
         <Playlist
+          themeColor={themeColor}
           open={isPlaylistOpen}
           audio={Array.isArray(audio) ? audio : [audio]}
           playingAudioUrl={playlist.currentSong.url}

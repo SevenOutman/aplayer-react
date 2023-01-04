@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import "aplayer/dist/APlayer.min.css";
-import { APlayer } from "../src";
+import { APlayer, type AudioInfo } from "../src";
 
 const playlist1 = [
   {
@@ -47,7 +47,7 @@ const playlist2 = [
 ];
 
 function App() {
-  const [playlist, setPlaylist] = useState(playlist1);
+  const [playlist, setPlaylist] = useState<AudioInfo[]>(playlist1);
   return (
     <div
       style={{
@@ -60,7 +60,12 @@ function App() {
       }}
     >
       <div style={{ width: 600 }}>
-        <APlayer audio={playlist} initialLoop="all" initialOrder="random" />
+        <APlayer
+          audio={playlist}
+          theme="auto"
+          initialLoop="all"
+          initialOrder="random"
+        />
       </div>
       <div>
         <button onClick={() => setPlaylist(playlist1)}>Playlist 1</button>

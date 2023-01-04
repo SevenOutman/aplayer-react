@@ -49,6 +49,7 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "clsx": "^1.2.1"
+    "clsx": "^1.2.1",
+    "colorthief": "^2.3.2"
   }
 }
