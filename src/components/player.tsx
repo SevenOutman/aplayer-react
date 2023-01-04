@@ -95,9 +95,10 @@ export function APlayer({
 
   return (
     <div
-      className={cx("aplayer aplayer-withlrc", {
+      className={cx("aplayer", {
         "aplayer-loading": audioControl.isLoading,
         "aplayer-withlist": hasPlaylist,
+        "aplayer-withlrc": Boolean(playlist.currentSong.lrc),
       })}
     >
       <div className="aplayer-body">
