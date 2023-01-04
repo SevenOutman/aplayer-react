@@ -56,6 +56,7 @@ export function APlayer({
 
   const audioControl = useAudioControl({
     initialVolume: volume,
+    autoPlay,
     onError() {
       if (playlist.hasNextSong) {
         playlist.next();
@@ -128,18 +129,16 @@ export function APlayer({
           </div>
           <Lyrics
             lrcText={playlist.currentSong.lrc}
-            currentTime={audioControl.currentTime}
+            currentTime={audioControl.currentTime ?? 0}
           />
           <PlaybackControls
-            volume={audioControl.volume}
-            onChangeVolume={audioControl.updateVolume}
-            muted={audioControl.muted}
-            onToggleMuted={() =>
-              audioControl.muted ? audioControl.unmute() : audioControl.mute()
-            }
+            volume={audioControl.volume ?? volume}
+            onChangeVolume={audioControl.setVolume}
+            muted={audioControl.muted ?? false}
+            onToggleMuted={() => audioControl.toggleMuted()}
             themeColor={themeColor}
             currentTime={audioControl.currentTime}
-            audioDurationSeconds={audioControl.audioDuration}
+            audioDurationSeconds={audioControl.duration}
             bufferedSeconds={audioControl.bufferedSeconds}
             onSeek={(second) => audioControl.seek(second)}
             onToggleMenu={() => setPlaylistOpen((open) => !open)}

@@ -1,60 +1,30 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
+import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 type CreateAudioElementOptions = {
   initialVolume?: number;
-};
+} & Pick<
+  React.DetailedHTMLProps<
+    React.AudioHTMLAttributes<HTMLAudioElement>,
+    HTMLAudioElement
+  >,
+  "autoPlay" | "onEnded" | "onError"
+>;
 
-function useCreateAudioElement(
-  options?: CreateAudioElementOptions &
-    Pick<
-      React.DetailedHTMLProps<
-        React.AudioHTMLAttributes<HTMLAudioElement>,
-        HTMLAudioElement
-      >,
-      | "onPlay"
-      | "onPause"
-      | "onProgress"
-      | "onDurationChange"
-      | "onTimeUpdate"
-      | "onVolumeChange"
-      | "onEnded"
-      | "onWaiting"
-      | "onCanPlay"
-      | "onError"
-    >
-) {
+function useCreateAudioElement(options?: CreateAudioElementOptions) {
   const audioElementRef = useRef<HTMLAudioElement>();
 
   if (typeof document !== "undefined" && !audioElementRef.current) {
     const audio = (audioElementRef.current = document.createElement("audio"));
 
+    if (typeof options?.autoPlay !== "undefined") {
+      audio.autoplay = options.autoPlay;
+    }
+
     if (typeof options?.initialVolume !== "undefined") {
       audio.volume = options.initialVolume;
     }
-
-    audio.addEventListener("play", (e) => {
-      options?.onPlay?.(e);
-    });
-    audio.addEventListener("pause", (e) => {
-      options?.onPause?.(e);
-    });
-    audio.addEventListener("durationchange", options?.onDurationChange);
-    audio.addEventListener("progress", options?.onProgress);
-    audio.addEventListener("timeupdate", options?.onTimeUpdate);
-    audio.addEventListener("volumechange", options?.onVolumeChange);
   }
-
-  useEffect(() => {
-    const audio = audioElementRef.current;
-
-    if (audio && options?.onWaiting) {
-      audio.addEventListener("waiting", options.onWaiting);
-
-      return () => {
-        audio.removeEventListener("waiting", options.onWaiting);
-      };
-    }
-  }, [options?.onWaiting]);
 
   useEffect(() => {
     const audio = audioElementRef.current;
@@ -67,18 +37,6 @@ function useCreateAudioElement(
       };
     }
   }, [options?.onError]);
-
-  useEffect(() => {
-    const audio = audioElementRef.current;
-
-    if (audio && options?.onCanPlay) {
-      audio.addEventListener("canplay", options.onCanPlay);
-
-      return () => {
-        audio.removeEventListener("canplay", options.onCanPlay);
-      };
-    }
-  }, [options?.onCanPlay]);
 
   useEffect(() => {
     const audio = audioElementRef.current;
@@ -107,70 +65,21 @@ function useCreateAudioElement(
   return audioElementRef;
 }
 
-type UseAudioControlOptions = CreateAudioElementOptions &
-  Pick<
-    React.DetailedHTMLProps<
-      React.AudioHTMLAttributes<HTMLAudioElement>,
-      HTMLAudioElement
-    >,
-    "onEnded" | "onError"
-  >;
-
-export function useAudioControl(options: UseAudioControlOptions) {
-  const audioElementRef = useCreateAudioElement({
-    initialVolume: options.initialVolume,
-    onPlay() {
-      setPlaying(true);
-    },
-    onPause() {
-      setPlaying(false);
-    },
-    onDurationChange(e) {
-      setAudioDuration((e.target as HTMLAudioElement).duration);
-    },
-    onTimeUpdate(e) {
-      setCurrentTime((e.target as HTMLAudioElement).currentTime);
-    },
-    onProgress(e) {
-      const audio = e.target as HTMLAudioElement;
-      setBufferedSeconds(audio.buffered.end(audio.buffered.length - 1));
-    },
-    onVolumeChange(e) {
-      const audio = e.target as HTMLAudioElement;
-      setVolume(audio.volume);
-      setMuted(audio.muted);
-    },
-    onWaiting() {
-      setLoading(true);
-    },
-    onCanPlay() {
-      setLoading(false);
-    },
-    onError: options.onError,
-    onEnded: options.onEnded,
-  });
-  const [isLoading, setLoading] = useState(false);
-
-  const [isPlaying, setPlaying] = useState(() =>
-    audioElementRef.current ? !audioElementRef.current.paused : false
-  );
-  const [audioDuration, setAudioDuration] = useState<number | undefined>();
-  const [currentTime, setCurrentTime] = useState<number>(0);
-  const [bufferedSeconds, setBufferedSeconds] = useState<number | undefined>(
-    undefined
-  );
-  const [volume, setVolume] = useState(options?.initialVolume ?? 0.7);
-  const [muted, setMuted] = useState<boolean>(
-    () => audioElementRef.current?.muted ?? false
-  );
+export function useAudioControl(options: CreateAudioElementOptions) {
+  const audioElementRef = useCreateAudioElement(options);
 
   const playAudio = useCallback(
     async (src: string) => {
-      audioElementRef.current?.setAttribute("src", src);
-      try {
-        await audioElementRef.current?.play();
-      } catch {
-        // Do nothing (for now)
+      const audio = audioElementRef.current;
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = src;
+        try {
+          await audioElementRef.current?.play();
+        } catch {
+          // Do nothing (for now)
+        }
       }
     },
     [audioElementRef]
@@ -196,18 +105,13 @@ export function useAudioControl(options: UseAudioControlOptions) {
     [audioElementRef]
   );
 
-  const mute = useCallback(() => {
+  const toggleMuted = useCallback(() => {
     if (audioElementRef.current) {
-      audioElementRef.current.muted = true;
-    }
-  }, [audioElementRef]);
-  const unmute = useCallback(() => {
-    if (audioElementRef.current) {
-      audioElementRef.current.muted = false;
+      audioElementRef.current.muted = !audioElementRef.current.muted;
     }
   }, [audioElementRef]);
 
-  const updateVolume = useCallback(
+  const setVolume = useCallback(
     (value: number) => {
       if (audioElementRef.current) {
         audioElementRef.current.volume = value;
@@ -216,14 +120,161 @@ export function useAudioControl(options: UseAudioControlOptions) {
     [audioElementRef]
   );
 
+  const volume = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener(
+          "volumechange",
+          onStoreChange
+        );
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "volumechange",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => audioElementRef.current?.volume
+  );
+
+  const muted = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener(
+          "volumechange",
+          onStoreChange
+        );
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "volumechange",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => audioElementRef.current?.muted
+  );
+
+  const currentTime = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener("timeupdate", onStoreChange);
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "timeupdate",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => audioElementRef.current?.currentTime
+  );
+
+  const duration = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener(
+          "durationchange",
+          onStoreChange
+        );
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "durationchange",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => audioElementRef.current?.duration
+  );
+
+  const bufferedSeconds = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener("progress", onStoreChange);
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "progress",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => {
+      const audio = audioElementRef.current;
+
+      if (!audio) return 0;
+
+      if (audio.buffered.length > 0) {
+        return audio.buffered.end(audio.buffered.length - 1);
+      }
+      return 0;
+    }
+  );
+
+  const isPlaying = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener("play", onStoreChange);
+        audioElementRef.current?.addEventListener("pause", onStoreChange);
+
+        return () => {
+          audioElementRef.current?.removeEventListener("play", onStoreChange);
+          audioElementRef.current?.removeEventListener("pause", onStoreChange);
+        };
+      },
+      [audioElementRef]
+    ),
+    () => {
+      const audio = audioElementRef.current;
+      return audio ? !audio.paused : false;
+    }
+  );
+
+  const isLoading = useSyncExternalStore(
+    useCallback(
+      (onStoreChange: () => void) => {
+        audioElementRef.current?.addEventListener("playing", onStoreChange);
+        audioElementRef.current?.addEventListener("waiting", onStoreChange);
+
+        return () => {
+          audioElementRef.current?.removeEventListener(
+            "playing",
+            onStoreChange
+          );
+          audioElementRef.current?.removeEventListener(
+            "waiting",
+            onStoreChange
+          );
+        };
+      },
+      [audioElementRef]
+    ),
+    () => {
+      const audio = audioElementRef.current;
+      if (!audio) return false;
+      return audio.networkState === audio.NETWORK_LOADING;
+    }
+  );
+
   return {
     volume,
-    updateVolume,
+    setVolume,
     muted,
-    mute,
-    unmute,
+    toggleMuted,
     isPlaying,
-    audioDuration,
+    duration,
     currentTime,
     bufferedSeconds,
     playAudio,

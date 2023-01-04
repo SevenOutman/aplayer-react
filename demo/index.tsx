@@ -65,6 +65,7 @@ function App() {
           theme="auto"
           initialLoop="all"
           initialOrder="random"
+          autoPlay
         />
       </div>
       <div>
