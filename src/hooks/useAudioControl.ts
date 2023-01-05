@@ -137,7 +137,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       },
       [audioElementRef]
     ),
-    () => audioElementRef.current?.volume
+    () => audioElementRef.current?.volume,
+    () => undefined
   );
 
   const muted = useSyncExternalStore(
@@ -157,7 +158,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       },
       [audioElementRef]
     ),
-    () => audioElementRef.current?.muted
+    () => audioElementRef.current?.muted,
+    () => undefined
   );
 
   const currentTime = useSyncExternalStore(
@@ -174,7 +176,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       },
       [audioElementRef]
     ),
-    () => audioElementRef.current?.currentTime
+    () => audioElementRef.current?.currentTime,
+    () => undefined
   );
 
   const duration = useSyncExternalStore(
@@ -194,7 +197,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       },
       [audioElementRef]
     ),
-    () => audioElementRef.current?.duration
+    () => audioElementRef.current?.duration,
+    () => undefined
   );
 
   const bufferedSeconds = useSyncExternalStore(
@@ -220,7 +224,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
         return audio.buffered.end(audio.buffered.length - 1);
       }
       return 0;
-    }
+    },
+    () => undefined
   );
 
   const isPlaying = useSyncExternalStore(
@@ -239,7 +244,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
     () => {
       const audio = audioElementRef.current;
       return audio ? !audio.paused : false;
-    }
+    },
+    () => undefined
   );
 
   const isLoading = useSyncExternalStore(
@@ -265,7 +271,8 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       const audio = audioElementRef.current;
       if (!audio) return false;
       return audio.networkState === audio.NETWORK_LOADING;
-    }
+    },
+    () => undefined
   );
 
   return {
