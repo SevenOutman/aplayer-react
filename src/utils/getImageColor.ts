@@ -1,4 +1,4 @@
-import ColorThief from "colorthief";
+import ColorThief from "@pioug/colorthief";
 
 let colorThiefSingleton: ColorThief;
 

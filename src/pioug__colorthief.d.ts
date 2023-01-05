@@ -1,6 +1,6 @@
 /// <reference types="lib" />
 
-declare module "colorthief" {
+declare module "@pioug/colorthief" {
   type Color = [r: number, g: number, b: number];
 
   export default class ColorThief {
