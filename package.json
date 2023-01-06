@@ -8,6 +8,11 @@
     "music",
     "player"
   ],
+  "homepage": "https://aplayer-react.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SevenOutman/aplayer-react"
+  },
   "license": "MIT",
   "author": {
     "name": "Doma",
