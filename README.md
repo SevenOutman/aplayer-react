@@ -1,35 +1,45 @@
-**💛 You can help the author become a full-time open-source maintainer by [sponsoring him on GitHub](https://github.com/sponsors/egoist).**
+# aplayer-react
 
----
+[APlayer](https://aplayer.js.org/) for your React application.
 
-# my-ts-lib
+![ScreenShot](./screenshot.png)
 
-[![npm version](https://badgen.net/npm/v/my-ts-lib)](https://npm.im/my-ts-lib) [![npm downloads](https://badgen.net/npm/dm/my-ts-lib)](https://npm.im/my-ts-lib)
+## Features
 
-## Using this template
+The APlayer feataures you love with the APlayer options you are familiar with.
 
-- Search `my-ts-lib` and replace it with your custom package name.
-- Search `egoist` and replace it with your name.
+- Beautiful and clean UI
+- Lyrics scroll
+- Playlist with repeat & shuffle controls
+- Custom theme color / Self-adapting theme color
 
-Features:
+## Usage
 
-- Package manager [pnpm](https://pnpm.js.org/), safe and fast
-- Release with [semantic-release](https://npm.im/semantic-release)
-- Bundle with [tsup](https://github.com/egoist/tsup)
-- Test with [vitest](https://vitest.dev)
+Install `aplayer-react` along with `aplayer`.
 
-To skip CI (GitHub action), add `skip-ci` to commit message. To skip release, add `skip-release` to commit message.
+    npm i aplayer-react aplayer
 
-## Install
+Import APlayer component from `aplayer-react` package, and import stylesheet from `aplayer` package.
 
-```bash
-npm i my-ts-lib
+```jsx
+import { APlayer } from "aplayer-react";
+import "aplayer/dist/APlayer.min.css";
+
+<APlayer
+  audio={{
+    name: "Dancing with my phone",
+    artist: "HYBS",
+    url: "https://music.163.com/song/media/outer/url?id=1969744125",
+  }}
+  autoPlay
+/>;
 ```
 
-## Sponsors
+## Who uses aplayer-react?
 
-[![sponsors](https://sponsors-images.egoist.sh/sponsors.svg)](https://github.com/sponsors/egoist)
+- [Doma's blog](https://doma.land)
 
-## License
+## Related projects
 
-MIT &copy; [EGOIST](https://github.com/sponsors/egoist)
+- [APlayer](https://github.com/DIYgod/APlayer): Prior art
+- [react-aplayer](https://github.com/sabrinaluo/react-aplayer): A React wrapper component of APlayer

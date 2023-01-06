@@ -11,6 +11,8 @@
     "allowJs": true,
     "noEmit": true,
     "outDir": "dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "jsx": "react-jsx",
+    "types": ["vite-plugin-svgr/client"]
   }
 }

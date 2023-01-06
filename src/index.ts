@@ -1,1 +1,2 @@
-export const foo = 'foo'
+export * from "./components/player";
+export * from "./types";
