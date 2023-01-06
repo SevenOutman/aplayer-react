@@ -6,7 +6,7 @@ import { useThemeColor } from "./useThemeColor";
 
 vi.mock("../utils/getImageColor", () => {
   return {
-    getImageColor: vi.fn(() => Promise.resolve(["r", "g", "b"])),
+    getImageColor: vi.fn(() => Promise.resolve("calculated")),
   };
 });
 
@@ -28,7 +28,7 @@ describe("`song.theme` is not specified", () => {
     expect(result.current).toBe(defaultThemeColor);
 
     await waitFor(() => {
-      expect(result.current).toBe("rgb(r,g,b)");
+      expect(result.current).toBe("calculated");
     });
   });
 });
@@ -64,7 +64,7 @@ describe('`song.theme` is "auto"', () => {
     expect(result.current).toBe("green");
 
     await waitFor(() => {
-      expect(result.current).toBe("rgb(r,g,b)");
+      expect(result.current).toBe("calculated");
     });
   });
 
@@ -74,7 +74,7 @@ describe('`song.theme` is "auto"', () => {
     expect(result.current).toBe(defaultThemeColor);
 
     await waitFor(() => {
-      expect(result.current).toBe("rgb(r,g,b)");
+      expect(result.current).toBe("calculated");
     });
   });
 });

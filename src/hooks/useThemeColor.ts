@@ -23,10 +23,10 @@ export function useThemeColor(
     if (shouldUseColorThief(song, fallback)) {
       const coverUrl = song!.cover!;
 
-      getImageColor(coverUrl).then(([r, g, b]) => {
+      getImageColor(coverUrl).then((hex) => {
         setCoverColorMap((prev) => ({
           ...prev,
-          [coverUrl]: `rgb(${r},${g},${b})`,
+          [coverUrl]: hex,
         }));
       });
     }

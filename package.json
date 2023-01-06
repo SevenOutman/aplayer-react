@@ -50,8 +50,8 @@
     "react": "^18.2.0"
   },
   "dependencies": {
-    "@pioug/colorthief": "^3.0.1",
     "clsx": "^1.2.1",
+    "fast-average-color": "^9.3.0",
     "use-sync-external-store": "^1.2.0"
   }
 }
