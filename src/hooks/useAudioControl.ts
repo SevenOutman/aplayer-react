@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef } from "react";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
 
 type CreateAudioElementOptions = {
   initialVolume?: number;
