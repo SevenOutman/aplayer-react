@@ -47,31 +47,34 @@ const playlist2 = [
 ];
 
 function App() {
-  const [playlist, setPlaylist] = useState<AudioInfo[]>(playlist1);
+  const [playlist] = useState<AudioInfo[]>(playlist1);
   return (
     <div
       style={{
         width: "100vw",
-        height: "100vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
+      <h1>aplayer-react</h1>
+      <p>The missing APlayer for your React application</p>
       <div style={{ width: 600 }}>
-        <APlayer
-          audio={playlist}
-          theme="auto"
-          initialLoop="all"
-          initialOrder="random"
-          autoPlay
-        />
+        <APlayer audio={playlist} theme="auto" initialLoop="all" autoPlay />
       </div>
-      <div>
-        <button onClick={() => setPlaylist(playlist1)}>Playlist 1</button>
-        <button onClick={() => setPlaylist(playlist2)}>Playlist 2</button>
-      </div>
+      <h2>Features</h2>
+      <ul>
+        <li>Beautiful and clean UI</li>
+        <li>Lyrics scroll</li>
+        <li>Playlist with repeat & shuffle controls</li>
+        <li>Custom theme color / Self-adapting theme color</li>
+      </ul>
+      <p>
+        <a href="https://github.com/SevenOutman/aplayer-react">
+          GitHub: SevenOutman/aplayer-react
+        </a>
+      </p>
     </div>
   );
 }
