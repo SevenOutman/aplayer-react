@@ -29,7 +29,8 @@
     "dev": "vite",
     "format": "prettier --write .",
     "prepublishOnly": "pnpm run build",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "test:coverage": "vitest run --passWithNoTests --coverage"
   },
   "dependencies": {
     "clsx": "^1.2.1",

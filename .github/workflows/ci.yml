@@ -46,7 +46,12 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Build and Test
-        run: pnpm test
+        run: pnpm test:coverage
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
 
   release:
     runs-on: ubuntu-latest
