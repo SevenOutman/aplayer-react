@@ -45,6 +45,7 @@
     "@typescript-eslint/parser": "^5.47.0",
     "@vitejs/plugin-react": "^2.2.0",
     "aplayer": "^1.10.1",
+    "c8": "^7.12.0",
     "esbuild-plugin-svgr": "^1.0.1",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
