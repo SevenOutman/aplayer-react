@@ -4,8 +4,6 @@
 
 ![ScreenShot](./screenshot.png)
 
-    npm i aplayer-react
-
 ## Features
 
 The APlayer feataures you love with the APlayer options you are familiar with.
@@ -17,8 +15,15 @@ The APlayer feataures you love with the APlayer options you are familiar with.
 
 ## Usage
 
+Install `aplayer-react` along with `aplayer`.
+
+    npm i aplayer-react aplayer
+
+Import APlayer component from `aplayer-react` package, and import stylesheet from `aplayer` package.
+
 ```jsx
 import { APlayer } from "aplayer-react";
+import "aplayer/dist/APlayer.min.css";
 
 <APlayer
   audio={{
