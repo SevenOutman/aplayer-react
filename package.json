@@ -2,6 +2,12 @@
   "name": "aplayer-react",
   "version": "0.0.0",
   "description": "The missing APlayer for React applications",
+  "keywords": [
+    "aplayer",
+    "react",
+    "music",
+    "player"
+  ],
   "license": "MIT",
   "author": {
     "name": "Doma",
