@@ -8,7 +8,7 @@ type CreateAudioElementOptions = {
     React.AudioHTMLAttributes<HTMLAudioElement>,
     HTMLAudioElement
   >,
-  "autoPlay" | "onEnded" | "onError"
+  "src" | "autoPlay" | "onEnded" | "onError"
 >;
 
 function useCreateAudioElement(options?: CreateAudioElementOptions) {
@@ -16,6 +16,10 @@ function useCreateAudioElement(options?: CreateAudioElementOptions) {
 
   if (typeof document !== "undefined" && !audioElementRef.current) {
     const audio = (audioElementRef.current = document.createElement("audio"));
+
+    if (typeof options?.src !== "undefined") {
+      audio.src = options.src;
+    }
 
     if (typeof options?.autoPlay !== "undefined") {
       audio.autoplay = options.autoPlay;
@@ -72,9 +76,11 @@ export function useAudioControl(options: CreateAudioElementOptions) {
     async (src: string) => {
       const audio = audioElementRef.current;
       if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-        audio.src = src;
+        if (audio.src !== src) {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.src = src;
+        }
         try {
           await audioElementRef.current?.play();
         } catch {
@@ -85,18 +91,21 @@ export function useAudioControl(options: CreateAudioElementOptions) {
     [audioElementRef]
   );
 
-  const togglePlay = useCallback(() => {
-    const audio = audioElementRef.current;
-    if (!audio) {
-      return;
-    }
+  const togglePlay = useCallback(
+    (src: string) => {
+      const audio = audioElementRef.current;
+      if (!audio) {
+        return;
+      }
 
-    if (audio.paused) {
-      audio.play();
-    } else {
-      audio.pause();
-    }
-  }, [audioElementRef]);
+      if (audio.paused) {
+        playAudio(src);
+      } else {
+        audio.pause();
+      }
+    },
+    [audioElementRef, playAudio]
+  );
 
   const seek = useCallback(
     (second: number) => {

@@ -55,6 +55,7 @@ export function APlayer({
   });
 
   const audioControl = useAudioControl({
+    src: playlist.currentSong.url,
     initialVolume: volume,
     autoPlay,
     onError() {
@@ -113,7 +114,7 @@ export function APlayer({
               "aplayer-button",
               audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
             )}
-            onClick={() => audioControl.togglePlay()}
+            onClick={() => audioControl.togglePlay(playlist.currentSong.url)}
           >
             {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
           </div>
