@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { createRoot } from "react-dom/client";
-import { APlayer, type AudioInfo } from "../src";
+import { APlayer, type AudioInfo } from "aplayer-react";
 import "aplayer/dist/APlayer.min.css";
 
 const playlist1 = [
@@ -46,24 +45,11 @@ const playlist2 = [
   },
 ];
 
-function App() {
+export function Demo() {
   const [playlist] = useState<AudioInfo[]>(playlist1);
   return (
-    <div
-      style={{
-        width: "100vw",
-        height: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <div style={{ width: 600 }}>
-        <APlayer audio={playlist} theme="auto" initialLoop="all" />
-      </div>
+    <div style={{ margin: "2em auto" }}>
+      <APlayer audio={playlist} theme="auto" initialLoop="all" />
     </div>
   );
 }
-
-createRoot(document.getElementById("root") as HTMLElement).render(<App />);
