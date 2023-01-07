@@ -1,0 +1,25 @@
+# Introduction
+
+Install `aplayer-react` along with `aplayer`.
+
+```bash
+npm i aplayer-react aplayer
+```
+
+Import APlayer component from `aplayer-react` package, and import stylesheet from `aplayer` package.
+
+```jsx
+import { APlayer } from "aplayer-react";
+import "aplayer/dist/APlayer.min.css";
+
+render(
+  <APlayer
+    audio={{
+      name: "Dancing with my phone",
+      artist: "HYBS",
+      url: "https://music.163.com/song/media/outer/url?id=1969744125",
+    }}
+    autoPlay
+  />
+);
+```

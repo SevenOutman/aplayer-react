@@ -4,6 +4,8 @@
 
 ![ScreenShot](./screenshot.png)
 
+View full documentation on https://aplayer-react.vercel.app
+
 ## Features
 
 The APlayer feataures you love with the APlayer options you are familiar with.
@@ -36,23 +38,6 @@ render(
   />
 );
 ```
-
-### Props
-
-| Prop         | Default          | Description                                                                                                                    |
-| ------------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| audio        |                  | Songs' information. Could be a single object or an array of objects                                                            |
-| audio.name   | `"Audio name"`   | Title of the song                                                                                                              |
-| audio.artist | `"Audio artist"` | Artist name of the song                                                                                                        |
-| audio.url    |                  | Url of the media source to play                                                                                                |
-| audio.cover  |                  | Url of the album cover image                                                                                                   |
-| audio.lrc    |                  | Lyrics of the song in raw LRC format                                                                                           |
-| audio.theme  |                  | Override theme color for this song. See `theme` prop for theme color explanation                                               |
-| theme        | `"#ebd0c2"`      | Theme color of the player that applies to progress bar, volume control bar and playlist marker.                                |
-| autoPlay     |                  | [See `autoplay` attribute of `<audio>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#attr-autoplay) |
-| volume       | `0.7`            | Initial volume of the player.                                                                                                  |
-| initialLoop  | `"all"`          | Initial loop mode of the player                                                                                                |
-| initialOrder | `"list"`         | Initial playlist order of the player                                                                                           |
 
 ## Who uses aplayer-react?
 

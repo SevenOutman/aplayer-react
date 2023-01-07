@@ -84,6 +84,7 @@ export function PlaybackControls({
 
     onLoopChange(nextLoop);
   }, [loop, onLoopChange]);
+
   return (
     <div className="aplayer-controller">
       <ProgressBar
