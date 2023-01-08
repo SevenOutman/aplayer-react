@@ -16,7 +16,7 @@ import { useThemeColor } from "../hooks/useThemeColor";
  * @see https://aplayer.js.org/#/home?id=options
  */
 type APlayerProps = {
-  audio: AudioInfo | AudioInfo[];
+  audio: AudioInfo | readonly AudioInfo[];
 
   theme?: string;
 
