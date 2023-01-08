@@ -8,7 +8,7 @@
 
 ![ScreenShot](./screenshot.png)
 
-View full documentation on https://aplayer-react.vercel.app
+View full documentation on https://aplayer-react.js.org
 
 ## Features
 
