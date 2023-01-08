@@ -62,7 +62,7 @@ export function Lyrics({ lrcText, currentTime }: LyricsProps) {
  *
  * @return {String} [[time, text], [time, text], [time, text], ...]
  */
-function parseLrc(lrc_s?: string): [time: number, text: string][] {
+export function parseLrc(lrc_s?: string): [time: number, text: string][] {
   if (lrc_s) {
     lrc_s = lrc_s.replace(/([^\]^\n])\[/g, (match, p1) => p1 + "\n[");
     const lyric = lrc_s.split("\n");
