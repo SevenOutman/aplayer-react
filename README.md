@@ -2,6 +2,10 @@
 
 [APlayer](https://aplayer.js.org/) for your React application.
 
+![npm](https://img.shields.io/npm/v/aplayer-react)
+![CI Status](https://github.com/SevenOutman/aplayer-react/actions/workflows/ci.yml/badge.svg)
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+
 ![ScreenShot](./screenshot.png)
 
 View full documentation on https://aplayer-react.vercel.app
