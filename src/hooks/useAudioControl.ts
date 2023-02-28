@@ -185,7 +185,16 @@ export function useAudioControl(options: CreateAudioElementOptions) {
       },
       [audioElementRef]
     ),
-    () => audioElementRef.current?.currentTime,
+    () => {
+      if (!audioElementRef.current) {
+        return undefined;
+      }
+
+      // Use `Math.round()` here because
+      //   1. The player UI only displays currentTime at second-level precision
+      //   2. Prevent too many updates (leads to crash on Safari)
+      return Math.round(audioElementRef.current.currentTime);
+    },
     () => undefined
   );
 
