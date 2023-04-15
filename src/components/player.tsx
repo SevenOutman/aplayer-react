@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import cx from "clsx";
 
 import { ReactComponent as IconPlay } from "../assets/play.svg";
@@ -93,6 +93,16 @@ export function APlayer({
   const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
 
   const themeColor = useThemeColor(playlist.currentSong, theme);
+  const playlistAudioProp = useMemo(
+    () => (Array.isArray(audio) ? audio : [audio]),
+    [audio]
+  );
+
+  const { prioritize } = playlist;
+  const handlePlayAudioFromList = useCallback(
+    (audioInfo: AudioInfo) => prioritize(audioInfo),
+    [prioritize]
+  );
 
   return (
     <div
@@ -157,9 +167,9 @@ export function APlayer({
         <Playlist
           themeColor={themeColor}
           open={isPlaylistOpen}
-          audio={Array.isArray(audio) ? audio : [audio]}
+          audio={playlistAudioProp}
           playingAudioUrl={playlist.currentSong.url}
-          onPlayAudio={(audioInfo) => playlist.prioritize(audioInfo)}
+          onPlayAudio={handlePlayAudioFromList}
         />
       ) : null}
     </div>
