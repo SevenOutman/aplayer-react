@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/node': 18.11.18
   aplayer: ^1.10.1
-  aplayer-react: 1.0.2
+  aplayer-react: 1.0.5
   next: ^13.1.1
   nextra: ^2.0.3
   nextra-theme-docs: ^2.0.3
@@ -13,7 +13,7 @@ specifiers:
 
 dependencies:
   aplayer: 1.10.1
-  aplayer-react: 1.0.2_haafgjv7g4ryx5flfh5ykp3hhe
+  aplayer-react: 1.0.5_haafgjv7g4ryx5flfh5ykp3hhe
   next: 13.1.1_biqbaboplfbrettd7655fr4n2y
   nextra: 2.0.3_q76c2b4vyoegvsbrcwkfvimnai
   nextra-theme-docs: 2.0.3_q76c2b4vyoegvsbrcwkfvimnai
@@ -421,8 +421,8 @@ packages:
       color-convert: 1.9.3
     dev: false
 
-  /aplayer-react/1.0.2_haafgjv7g4ryx5flfh5ykp3hhe:
-    resolution: {integrity: sha512-gALLJmkRdPWfEsvnzhJgyMJ3fDh6bNvN79LuiSiCzGXEFq3CWrwRn19YLZe+LYrUiSK0xql/m3Ms342ZMXF88g==}
+  /aplayer-react/1.0.5_haafgjv7g4ryx5flfh5ykp3hhe:
+    resolution: {integrity: sha512-iVMOJmI+NxY2AIgTkZlhVyiesLYR1Oqmyp2pUjPVhZpvzZjPKshLralGsTUy4gQlDs0X4yahSzHK7+TA5vA9KQ==}
     peerDependencies:
       aplayer: ^1.10.1
       react: ^18.2.0
