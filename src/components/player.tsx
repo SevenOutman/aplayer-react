@@ -11,6 +11,8 @@ import { defaultThemeColor } from "../constants";
 import { PlaylistLoop, PlaylistOrder, usePlaylist } from "../hooks/usePlaylist";
 import { Lyrics } from "./lyrics";
 import { useThemeColor } from "../hooks/useThemeColor";
+import { useNotice } from "../hooks/useNotice";
+import { useSetTimeout } from "../hooks/useSetTimeout";
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
@@ -54,13 +56,34 @@ export function APlayer({
     getSongId: (song) => song.url,
   });
 
+  const [notice, showNotice] = useNotice();
+
+  const autoSkipTimeoutRef = useRef<NodeJS.Timeout | undefined>();
+  const setTimeout = useSetTimeout();
+
+  const cancelAutoSkip = useCallback(() => {
+    if (autoSkipTimeoutRef.current) {
+      clearTimeout(autoSkipTimeoutRef.current);
+      autoSkipTimeoutRef.current = undefined;
+    }
+  }, []);
+
   const audioControl = useAudioControl({
     src: playlist.currentSong.url,
     initialVolume: volume,
     autoPlay,
-    onError() {
+    onError(e) {
+      const { error } = e.target as HTMLAudioElement;
+
+      if (error) {
+        showNotice(
+          "An audio error has occurred, player will skip forward in 2 seconds."
+        );
+      }
       if (playlist.hasNextSong) {
-        playlist.next();
+        autoSkipTimeoutRef.current = setTimeout(() => {
+          playlist.next();
+        }, 2000);
       }
     },
     onEnded() {
@@ -88,6 +111,11 @@ export function APlayer({
     }
   }, [playlist.currentSong, audioControl.playAudio]);
 
+  const handlePlayButtonClick = useCallback(() => {
+    cancelAutoSkip();
+    audioControl.togglePlay(playlist.currentSong.url);
+  }, [audioControl, cancelAutoSkip, playlist.currentSong.url]);
+
   const hasPlaylist = playlist.length > 1;
 
   const [isPlaylistOpen, setPlaylistOpen] = useState(() => hasPlaylist);
@@ -100,8 +128,11 @@ export function APlayer({
 
   const { prioritize } = playlist;
   const handlePlayAudioFromList = useCallback(
-    (audioInfo: AudioInfo) => prioritize(audioInfo),
-    [prioritize]
+    (audioInfo: AudioInfo) => {
+      cancelAutoSkip();
+      prioritize(audioInfo);
+    },
+    [cancelAutoSkip, prioritize]
   );
 
   return (
@@ -124,7 +155,7 @@ export function APlayer({
               "aplayer-button",
               audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
             )}
-            onClick={() => audioControl.togglePlay(playlist.currentSong.url)}
+            onClick={handlePlayButtonClick}
           >
             {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
           </div>
@@ -160,7 +191,9 @@ export function APlayer({
             onLoopChange={playlist.setLoop}
           />
         </div>
-        <div className="aplayer-notice"></div>
+        <div className="aplayer-notice" style={notice.style}>
+          {notice.text}
+        </div>
         <div className="aplayer-miniswitcher"></div>
       </div>
       {hasPlaylist ? (
