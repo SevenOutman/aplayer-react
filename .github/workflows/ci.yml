@@ -26,6 +26,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+
       - name: Cache ~/.pnpm-store
         uses: actions/cache@v2
         env:
@@ -37,9 +43,6 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}-test-${{ env.cache-name }}-
             ${{ runner.os }}-${{ matrix.node-version }}-test-
             ${{ runner.os }}-
-
-      - name: Install pnpm
-        run: npm i -g pnpm
 
       - name: Install deps
         run: pnpm i
@@ -62,6 +65,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.x
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 7
+
       - name: Cache ~/.pnpm-store
         uses: actions/cache@v2
         env:
@@ -73,7 +83,6 @@ jobs:
             ${{ runner.os }}-${{ matrix.node-version }}-release-${{ env.cache-name }}-
             ${{ runner.os }}-${{ matrix.node-version }}-release-
             ${{ runner.os }}-
-      - run: npm i -g pnpm
       - run: pnpm i
       - run: pnpm dlx semantic-release
         env:
