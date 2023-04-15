@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { useSetTimeout } from "./useSetTimeout";
 
 export function useNotice() {
-  const timerRef = useRef<NodeJS.Timeout | undefined>();
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>();
   const [notice, setNotice] = useState({ text: "", style: { opacity: 0 } });
 
   const setTimeout = useSetTimeout();

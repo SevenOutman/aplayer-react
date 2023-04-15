@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 
 export function useSetTimeout() {
-  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   useEffect(() => {
     const timeouts = timeoutsRef.current;

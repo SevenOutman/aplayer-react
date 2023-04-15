@@ -58,7 +58,9 @@ export function APlayer({
 
   const [notice, showNotice] = useNotice();
 
-  const autoSkipTimeoutRef = useRef<NodeJS.Timeout | undefined>();
+  const autoSkipTimeoutRef = useRef<
+    ReturnType<typeof setTimeout> | undefined
+  >();
   const setTimeout = useSetTimeout();
 
   const cancelAutoSkip = useCallback(() => {
