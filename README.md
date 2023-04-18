@@ -12,7 +12,7 @@ View full documentation on https://aplayer-react.js.org
 
 ## Features
 
-The APlayer feataures you love with the APlayer options you are familiar with.
+The APlayer features you love with the APlayer options you are familiar with.
 
 - Beautiful and clean UI
 - Lyrics scroll
@@ -29,7 +29,7 @@ Import APlayer component from `aplayer-react` package, and import stylesheet fro
 
 ```jsx
 import { APlayer } from "aplayer-react";
-import "aplayer/dist/APlayer.min.css";
+import "aplayer-react/dist/index.css";
 
 render(
   <APlayer

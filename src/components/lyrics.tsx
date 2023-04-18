@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import cx from "clsx";
+import { clsx } from "clsx";
 
 type LyricsProps = {
   lrcText?: string;
@@ -35,7 +35,7 @@ export function Lyrics({ lrcText, currentTime }: LyricsProps) {
           {lines.map(([, text], index) => (
             <p
               key={index}
-              className={cx({
+              className={clsx({
                 "aplayer-lrc-current": index === currentLineIndex,
               })}
             >
