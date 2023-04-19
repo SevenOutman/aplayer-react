@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import cx from "clsx";
+import { clsx } from "clsx";
 
 import { ReactComponent as IconPlay } from "../assets/play.svg";
 import { ReactComponent as IconPause } from "../assets/pause.svg";
@@ -13,6 +13,8 @@ import { Lyrics } from "./lyrics";
 import { useThemeColor } from "../hooks/useThemeColor";
 import { useNotice } from "../hooks/useNotice";
 import { useSetTimeout } from "../hooks/useSetTimeout";
+
+import "../styles/main.css";
 
 /**
  * @see https://aplayer.js.org/#/home?id=options
@@ -139,7 +141,7 @@ export function APlayer({
 
   return (
     <div
-      className={cx("aplayer", {
+      className={clsx("aplayer", {
         "aplayer-loading": audioControl.isLoading,
         "aplayer-withlist": hasPlaylist,
         "aplayer-withlrc": Boolean(playlist.currentSong.lrc),
@@ -153,7 +155,7 @@ export function APlayer({
           }}
         >
           <div
-            className={cx(
+            className={clsx(
               "aplayer-button",
               audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
             )}

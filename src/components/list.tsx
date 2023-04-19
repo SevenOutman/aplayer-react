@@ -1,4 +1,4 @@
-import cx from "clsx";
+import { clsx } from "clsx";
 import { defaultThemeColor } from "../constants";
 import type { AudioInfo } from "../types";
 
@@ -19,7 +19,7 @@ export function Playlist({
 }: PlaylistProps) {
   return (
     <div
-      className={cx("aplayer-list", {
+      className={clsx("aplayer-list", {
         "aplayer-list-hide": !open,
       })}
     >
@@ -27,7 +27,7 @@ export function Playlist({
         {audio.map((audioInfo, index) => (
           <li
             key={index}
-            className={cx({
+            className={clsx({
               "aplayer-list-light": audioInfo.url === playingAudioUrl,
             })}
             onClick={() => {
