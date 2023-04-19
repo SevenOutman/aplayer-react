@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { APlayer, type AudioInfo } from "../src";
-import "../dist/index.css";
 
 const playlist1 = [
   {
