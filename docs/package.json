@@ -10,6 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.0.0",
     "aplayer": "^1.10.1",
     "aplayer-react": "1.0.5",
     "next": "^13.1.1",

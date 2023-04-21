@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@types/node': 18.11.18
+  '@vercel/analytics': ^1.0.0
   aplayer: ^1.10.1
   aplayer-react: 1.0.5
   next: ^13.1.1
@@ -12,6 +13,7 @@ specifiers:
   typescript: ^4.9.4
 
 dependencies:
+  '@vercel/analytics': 1.0.0_react@18.2.0
   aplayer: 1.10.1
   aplayer-react: 1.0.5_haafgjv7g4ryx5flfh5ykp3hhe
   next: 13.1.1_biqbaboplfbrettd7655fr4n2y
@@ -398,6 +400,14 @@ packages:
 
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
+    dev: false
+
+  /@vercel/analytics/1.0.0_react@18.2.0:
+    resolution: {integrity: sha512-RQmj7pv82JwGDHrnKeRc6TtSw2U7rWNubc2IH0ernTzWTj02yr9zvIYiYJeztsBzrJtWv7m8Nz6vxxb+cdEtJw==}
+    peerDependencies:
+      react: ^16.8||^17||^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /acorn-jsx/5.3.2_acorn@8.8.1:
