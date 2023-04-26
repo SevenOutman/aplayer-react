@@ -21,11 +21,11 @@ The APlayer features you love with the APlayer options you are familiar with.
 
 ## Usage
 
-Install `aplayer-react` along with `aplayer`.
+Install `aplayer-react` npm package
 
-    npm i aplayer-react aplayer
+    npm i aplayer-react
 
-Import APlayer component from `aplayer-react` package, and import stylesheet from `aplayer` package.
+Import APlayer component from `aplayer-react` package, and import stylesheet.
 
 ```jsx
 import { APlayer } from "aplayer-react";
