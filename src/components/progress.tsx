@@ -1,33 +1,18 @@
-import React, { useCallback } from "react";
+import React, { Ref } from "react";
 import { ReactComponent as IconLoading } from "../assets/loading.svg";
 
 type ProgressBarProps = {
   themeColor: string;
   bufferedPercentage: number;
   playedPercentage: number;
-
-  onSeek?: (percentage: number) => void;
 };
 
-export function ProgressBar({
-  themeColor,
-  bufferedPercentage,
-  playedPercentage,
-  onSeek,
-}: ProgressBarProps) {
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const barDimensions = e.currentTarget.getBoundingClientRect();
-      const deltaX = e.clientX - barDimensions.x;
-      const percentage = deltaX / barDimensions.width;
-
-      onSeek?.(percentage);
-    },
-    [onSeek]
-  );
-
+export const ProgressBar = React.forwardRef(function ProgressBar(
+  { themeColor, bufferedPercentage, playedPercentage }: ProgressBarProps,
+  ref: Ref<HTMLDivElement>
+) {
   return (
-    <div className="aplayer-bar-wrap" onMouseDown={handleMouseDown}>
+    <div ref={ref} className="aplayer-bar-wrap">
       <div className="aplayer-bar">
         <div
           className="aplayer-loaded"
@@ -52,4 +37,4 @@ export function ProgressBar({
       </div>
     </div>
   );
-}
+});

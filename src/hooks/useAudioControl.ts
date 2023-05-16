@@ -1,5 +1,12 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim/index.js";
+import { computePercentage } from "../utils/computePercentage";
 
 type CreateAudioElementOptions = {
   initialVolume?: number;
@@ -69,8 +76,88 @@ function useCreateAudioElement(options?: CreateAudioElementOptions) {
   return audioElementRef;
 }
 
+function useProgressBar(audio: ReturnType<typeof useCreateAudioElement>) {
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const [barState, setBarState] = useState({
+    percentage: 0,
+    isThumbDown: false,
+  });
+
+  const seek = useCallback(
+    (second: number) => {
+      if (audio.current && !Number.isNaN(second)) {
+        audio.current.currentTime = second;
+      }
+    },
+    [audio]
+  );
+
+  const handlePercentage = useCallback((percentage: number) => {
+    if (!Number.isNaN(percentage)) {
+      setBarState((prev) => ({ ...prev, percentage: percentage }));
+    }
+  }, []);
+
+  const handleIsThumbDown = useCallback((is: boolean) => {
+    setBarState((prev) => ({ ...prev, isThumbDown: is }));
+  }, []);
+
+  const thumbMove = useCallback(
+    (e: MouseEvent) => {
+      if (!progressBarRef.current || !audio.current) return;
+
+      const percentage = computePercentage(e, progressBarRef);
+      handlePercentage(percentage);
+    },
+    [audio, handlePercentage]
+  );
+
+  const thumbUp = useCallback(
+    (e: MouseEvent) => {
+      if (!progressBarRef.current || !audio.current) return;
+
+      document.removeEventListener("mouseup", thumbUp);
+      document.removeEventListener("mousemove", thumbMove);
+      const percentage = computePercentage(e, progressBarRef);
+      const currentTime = audio.current.duration * percentage;
+
+      handlePercentage(percentage);
+      handleIsThumbDown(false);
+      seek(currentTime);
+    },
+    [audio, handleIsThumbDown, handlePercentage, seek, thumbMove]
+  );
+
+  useEffect(() => {
+    const ref = progressBarRef.current;
+    if (ref) {
+      ref.addEventListener("mousedown", (e) => {
+        handleIsThumbDown(true);
+        const percentage = computePercentage(e, progressBarRef);
+        handlePercentage(percentage);
+
+        document.addEventListener("mousemove", thumbMove);
+        document.addEventListener("mouseup", thumbUp);
+      });
+    }
+
+    return () => {
+      if (ref) {
+        ref.removeEventListener("mousedown", () => {
+          document.addEventListener("mousemove", thumbMove);
+          document.addEventListener("mouseup", thumbUp);
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { progressBarRef, barState };
+}
+
 export function useAudioControl(options: CreateAudioElementOptions) {
   const audioElementRef = useCreateAudioElement(options);
+  const { progressBarRef, barState } = useProgressBar(audioElementRef);
 
   const playAudio = useCallback(
     async (src: string) => {
@@ -293,6 +380,12 @@ export function useAudioControl(options: CreateAudioElementOptions) {
     () => undefined
   );
 
+  const playedPercentage = useMemo(() => {
+    if (barState.isThumbDown) return barState.percentage;
+    if (!currentTime || !duration) return 0;
+    return currentTime / duration;
+  }, [barState.isThumbDown, barState.percentage, currentTime, duration]);
+
   return {
     volume,
     setVolume,
@@ -306,5 +399,7 @@ export function useAudioControl(options: CreateAudioElementOptions) {
     togglePlay,
     seek,
     isLoading,
+    progressBarRef,
+    playedPercentage,
   };
 }
