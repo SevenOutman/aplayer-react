@@ -8,6 +8,7 @@ type PlaylistProps = {
   playingAudioUrl?: string;
   onPlayAudio?: (audio: AudioInfo) => void;
   themeColor?: string;
+  listMaxHeight?: number;
 };
 
 export function Playlist({
@@ -15,15 +16,17 @@ export function Playlist({
   audio,
   playingAudioUrl,
   onPlayAudio,
+  listMaxHeight,
   themeColor = defaultThemeColor,
 }: PlaylistProps) {
+  const olStyle = listMaxHeight ? { maxHeight: listMaxHeight } : undefined;
   return (
     <div
       className={clsx("aplayer-list", {
         "aplayer-list-hide": !open,
       })}
     >
-      <ol>
+      <ol style={olStyle}>
         {audio.map((audioInfo, index) => (
           <li
             key={index}
