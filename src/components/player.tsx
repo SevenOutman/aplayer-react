@@ -42,6 +42,11 @@ type APlayerProps = {
   initialOrder?: PlaylistOrder;
 
   autoPlay?: boolean;
+
+  /**
+   * @default 250
+   */
+  listMaxHeight?: number;
 };
 
 export function APlayer({
@@ -51,6 +56,7 @@ export function APlayer({
   initialLoop,
   initialOrder,
   autoPlay = false,
+  listMaxHeight = 250,
 }: APlayerProps) {
   const playlist = usePlaylist(Array.isArray(audio) ? audio : [audio], {
     initialLoop,
@@ -208,6 +214,7 @@ export function APlayer({
           audio={playlistAudioProp}
           playingAudioUrl={playlist.currentSong.url}
           onPlayAudio={handlePlayAudioFromList}
+          listMaxHeight={listMaxHeight}
         />
       ) : null}
     </div>
