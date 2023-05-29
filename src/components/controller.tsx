@@ -1,6 +1,3 @@
-import { ReactComponent as IconVolumeUp } from "../assets/volume-up.svg";
-import { ReactComponent as IconVolumeDown } from "../assets/volume-down.svg";
-import { ReactComponent as IconVolumeOff } from "../assets/volume-off.svg";
 import { ReactComponent as IconMenu } from "../assets/menu.svg";
 import { ReactComponent as IconOrderList } from "../assets/order-list.svg";
 import { ReactComponent as IconOrderRandom } from "../assets/order-random.svg";
@@ -11,6 +8,7 @@ import { formatAudioDuration } from "../utils/formatAudioDuration";
 import { ProgressBar } from "./progress";
 import React, { useCallback } from "react";
 import { PlaylistLoop, PlaylistOrder } from "../hooks/usePlaylist";
+import { Volume } from "./volume";
 
 type PlaybackControlsProps = {
   themeColor: string;
@@ -45,21 +43,6 @@ export function PlaybackControls({
   onLoopChange,
   onSeek,
 }: PlaybackControlsProps) {
-  const handleVolumeBarMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      const volumeBarElement = e.currentTarget;
-      const volumeBarRect = volumeBarElement.getBoundingClientRect();
-
-      onChangeVolume(
-        Math.min(
-          1,
-          Math.max(0, (volumeBarRect.bottom - e.clientY) / volumeBarRect.height)
-        )
-      );
-    },
-    [onChangeVolume]
-  );
-
   // Switch order between "list" and "random"
   const handleOrderButtonClick = useCallback(() => {
     const nextOrder: PlaylistOrder = (
@@ -116,34 +99,13 @@ export function PlaybackControls({
         <span className="aplayer-icon aplayer-icon-back"></span>
         <span className="aplayer-icon aplayer-icon-play"></span>
         <span className="aplayer-icon aplayer-icon-forward"></span>
-        <div className="aplayer-volume-wrap">
-          <button
-            className="aplayer-icon aplayer-icon-volume-down"
-            onClick={() => onToggleMuted()}
-          >
-            {muted ? (
-              <IconVolumeOff />
-            ) : volume >= 1 ? (
-              <IconVolumeUp />
-            ) : (
-              <IconVolumeDown />
-            )}
-          </button>
-          <div
-            className="aplayer-volume-bar-wrap"
-            onMouseDown={handleVolumeBarMouseDown}
-          >
-            <div className="aplayer-volume-bar">
-              <div
-                className="aplayer-volume"
-                style={{
-                  backgroundColor: themeColor,
-                  height: muted ? 0 : `${volume * 100}%`,
-                }}
-              ></div>
-            </div>
-          </div>
-        </div>
+        <Volume
+          themeColor={themeColor}
+          volume={volume}
+          muted={muted}
+          onToggleMuted={onToggleMuted}
+          onChangeVolume={onChangeVolume}
+        />
         <button
           className="aplayer-icon aplayer-icon-order"
           onClick={handleOrderButtonClick}
