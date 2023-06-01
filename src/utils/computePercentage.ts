@@ -1,5 +1,5 @@
 export function computePercentage(
-  eventTarget: MouseEvent,
+  eventTarget: Pick<MouseEvent, "clientX">,
   progressBarRef: React.RefObject<HTMLDivElement>
 ) {
   if (!progressBarRef.current) return 0;

@@ -26,8 +26,7 @@ type PlaybackControlsProps = {
   onOrderChange: (order: PlaylistOrder) => void;
   loop: PlaylistLoop;
   onLoopChange: (loop: PlaylistLoop) => void;
-  progressBarRef: React.RefObject<HTMLDivElement>;
-  playedPercentage: number;
+  onSeek?: (second: number) => void;
 };
 
 export function PlaybackControls({
@@ -44,8 +43,7 @@ export function PlaybackControls({
   onOrderChange,
   loop,
   onLoopChange,
-  progressBarRef,
-  playedPercentage,
+  onSeek,
 }: PlaybackControlsProps) {
   const handleVolumeBarMouseDown = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -90,10 +88,20 @@ export function PlaybackControls({
   return (
     <div className="aplayer-controller">
       <ProgressBar
-        ref={progressBarRef}
         themeColor={themeColor}
-        playedPercentage={playedPercentage}
-        bufferedPercentage={bufferedSeconds / audioDurationSeconds}
+        playedPercentage={
+          typeof currentTime === "undefined" ||
+          typeof audioDurationSeconds === "undefined"
+            ? undefined
+            : currentTime / audioDurationSeconds
+        }
+        bufferedPercentage={
+          typeof bufferedSeconds === "undefined" ||
+          typeof audioDurationSeconds === "undefined"
+            ? undefined
+            : bufferedSeconds / audioDurationSeconds
+        }
+        onSeek={(progress) => onSeek?.(progress * audioDurationSeconds)}
       />
       <div className="aplayer-time">
         <span className="aplayer-time-inner">
