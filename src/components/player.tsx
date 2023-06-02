@@ -193,13 +193,12 @@ export function APlayer({
             currentTime={audioControl.currentTime}
             audioDurationSeconds={audioControl.duration}
             bufferedSeconds={audioControl.bufferedSeconds}
+            onSeek={(second) => audioControl.seek(second)}
             onToggleMenu={() => setPlaylistOpen((open) => !open)}
             order={playlist.order}
             onOrderChange={playlist.setOrder}
             loop={playlist.loop}
             onLoopChange={playlist.setLoop}
-            progressBarRef={audioControl.progressBarRef}
-            playedPercentage={audioControl.playedPercentage}
           />
         </div>
         <div className="aplayer-notice" style={notice.style}>
