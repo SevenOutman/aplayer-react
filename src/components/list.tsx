@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { defaultThemeColor } from "../constants";
-import type { AudioInfo } from "../types";
+import type { ArtistInfo, AudioInfo } from "../types";
+import { useCallback } from "react";
 
 type PlaylistProps = {
   open: boolean;
@@ -20,6 +21,14 @@ export function Playlist({
   themeColor = defaultThemeColor,
 }: PlaylistProps) {
   const olStyle = listMaxHeight ? { maxHeight: listMaxHeight } : undefined;
+
+  const renderArtist = useCallback((artist?: string | ArtistInfo) => {
+    if (!artist) return "Audio artist";
+    if (typeof artist === "string") return artist;
+
+    return artist.name ?? "Audio artist";
+  }, []);
+
   return (
     <div
       className={clsx("aplayer-list", {
@@ -50,7 +59,7 @@ export function Playlist({
               {audioInfo.name ?? "Audio name"}
             </span>
             <span className="aplayer-list-author">
-              {audioInfo.artist ?? "Audio artist"}
+              {renderArtist(audioInfo.artist)}
             </span>
           </li>
         ))}

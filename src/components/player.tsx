@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 
 import { ReactComponent as IconPlay } from "../assets/play.svg";
 import { ReactComponent as IconPause } from "../assets/pause.svg";
-import type { AudioInfo } from "../types";
+import type { ArtistInfo, AudioInfo } from "../types";
 import { Playlist } from "./list";
 import { PlaybackControls } from "./controller";
 import { useAudioControl } from "../hooks/useAudioControl";
@@ -145,6 +145,21 @@ export function APlayer({
     [cancelAutoSkip, prioritize]
   );
 
+  const renderArtist = useCallback((artist?: string | ArtistInfo) => {
+    if (!artist) return "Audio artist";
+    if (typeof artist === "string") return artist;
+
+    if (!artist.url) {
+      return artist.name ?? "Audio artist";
+    }
+
+    return (
+      <a href={artist.url} target="_blank" rel="noreferrer">
+        {artist.name ?? "Audio artist"}
+      </a>
+    );
+  }, []);
+
   return (
     <div
       className={clsx("aplayer", {
@@ -177,7 +192,7 @@ export function APlayer({
             </span>
             <span className="aplayer-author">
               {" "}
-              - {playlist.currentSong?.artist ?? "Audio artist"}
+              - {renderArtist(playlist.currentSong?.artist)}
             </span>
           </div>
           <Lyrics

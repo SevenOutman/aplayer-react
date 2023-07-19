@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { APlayer, type AudioInfo } from "aplayer-react";
-import "aplayer/dist/APlayer.min.css";
+import "aplayer-react/dist/index.css";
 
 const playlist1 = [
   {
