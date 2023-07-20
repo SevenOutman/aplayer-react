@@ -5,7 +5,10 @@ import "aplayer-react/dist/index.css";
 const playlist1 = [
   {
     name: "Dancing with my phone",
-    artist: "HYBS",
+    artist: {
+      name: "HYBS",
+      url: "https://music.163.com/#/artist?id=49713779",
+    },
     url: "https://music.163.com/song/media/outer/url?id=1969744125",
     cover:
       "https://p1.music.126.net/tOtUdKjS9rktAFRamcomWQ==/109951167748733958.jpg",

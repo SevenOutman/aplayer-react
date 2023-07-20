@@ -8,12 +8,9 @@ dependencies:
   '@vercel/analytics':
     specifier: ^1.0.0
     version: 1.0.0(react@18.2.0)
-  aplayer:
-    specifier: ^1.10.1
-    version: 1.10.1
   aplayer-react:
-    specifier: 1.4.0
-    version: 1.4.0(react@18.2.0)
+    specifier: 1.5.0
+    version: 1.5.0(react@18.2.0)
   next:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
@@ -443,8 +440,8 @@ packages:
       color-convert: 1.9.3
     dev: false
 
-  /aplayer-react@1.4.0(react@18.2.0):
-    resolution: {integrity: sha512-gYEWk1ynBSdF7qjMCo1wl2itg595iVj5jdo0Ewep9RhX7aHxdCykwp22t/cwce+KSQ6BAXg4JhUPCsm1oopiLw==}
+  /aplayer-react@1.5.0(react@18.2.0):
+    resolution: {integrity: sha512-2E1FjCCvIBnmVgRGVJD7LPeXxCNrPhsgUb/I8UdItb9CT/vx7RQFDVNCJQBmAxl6D4m/TeBzRsL96oKrV5GrDg==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
@@ -452,14 +449,6 @@ packages:
       fast-average-color: 9.3.0
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
-    dev: false
-
-  /aplayer@1.10.1:
-    resolution: {integrity: sha512-HAfyxgCUTLAqtYlxzzK9Fyqg6y+kZ9CqT1WfeWE8FSzwspT6oBqWOZHANPHF3RGTtC33IsyEgrfthPDzU5r9kQ==}
-    dependencies:
-      balloon-css: 0.5.2
-      promise-polyfill: 7.1.0
-      smoothscroll: 0.4.0
     dev: false
 
   /arch@2.2.0:
@@ -483,10 +472,6 @@ packages:
 
   /bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
-    dev: false
-
-  /balloon-css@0.5.2:
-    resolution: {integrity: sha512-zheJpzwyNrG4t39vusA67v3BYg1HTVXOF8cErPEHzWK88PEOFwgo6Ea9VHOgOWNMgeuOtFVtB73NE2NWl9uDyQ==}
     dev: false
 
   /caniuse-lite@1.0.30001442:
@@ -1732,10 +1717,6 @@ packages:
       source-map-js: 1.0.2
     dev: false
 
-  /promise-polyfill@7.1.0:
-    resolution: {integrity: sha512-P6NJ2wU/8fac44ENORsuqT8TiolKGB2u0fEClPtXezn7w5cmLIjM/7mhPlTebke2EPr6tmqZbXvnX0TxwykGrg==}
-    dev: false
-
   /property-information@6.2.0:
     resolution: {integrity: sha512-kma4U7AFCTwpqq5twzC1YVIDXSqg6qQK6JN0smOw8fgRy1OkMi0CYSzFmsy6dnqSenamAtj0CyXMUJ1Mf6oROg==}
     dev: false
@@ -1933,10 +1914,6 @@ packages:
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
-    dev: false
-
-  /smoothscroll@0.4.0:
-    resolution: {integrity: sha512-sggQ3U2Un38b3+q/j1P4Y4fCboCtoUIaBYoge+Lb6Xg1H8RTIif/hugVr+ErMtIDpvBbhQfTjtiTeYAfbw1ZGQ==}
     dev: false
 
   /sort-keys@5.0.0:
