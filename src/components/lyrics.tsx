@@ -2,11 +2,12 @@ import React, { useMemo } from "react";
 import { clsx } from "clsx";
 
 type LyricsProps = {
+  show: boolean;
   lrcText?: string;
   currentTime: number;
 };
 
-export function Lyrics({ lrcText, currentTime }: LyricsProps) {
+export function Lyrics({ show, lrcText, currentTime }: LyricsProps) {
   const lines = useMemo(() => parseLrc(lrcText), [lrcText]);
 
   const currentLineIndex = useMemo(() => {
@@ -29,7 +30,11 @@ export function Lyrics({ lrcText, currentTime }: LyricsProps) {
   }, [currentLineIndex]);
 
   return (
-    <div className="aplayer-lrc">
+    <div
+      className={clsx("aplayer-lrc", {
+        "aplayer-lrc-hide": !show,
+      })}
+    >
       {lrcText ? (
         <div className="aplayer-lrc-contents" style={transformStyle}>
           {lines.map(([, text], index) => (

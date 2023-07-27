@@ -14,6 +14,7 @@ type PlaylistState<T> = Readonly<{
   currentSong: T;
   hasNextSong: boolean;
   next: () => void;
+  previous: () => void;
   prioritize: (song: T) => void;
   order: PlaylistOrder;
   setOrder: (order: PlaylistOrder) => void;
@@ -79,6 +80,18 @@ export function usePlaylist<T, K>(
     }
   }, [nextSong]);
 
+  const previous = useCallback(() => {
+    setCurrentSong((prev) => {
+      const currentSongIndex = list.indexOf(prev);
+
+      if (currentSongIndex > 0) {
+        return list[currentSongIndex - 1];
+      }
+
+      return prev;
+    });
+  }, [list]);
+
   const prioritize = useCallback((song: T) => {
     setCurrentSong(song);
   }, []);
@@ -87,6 +100,7 @@ export function usePlaylist<T, K>(
     currentSong,
     hasNextSong: typeof nextSong !== "undefined",
     next,
+    previous,
     prioritize,
     order,
     setOrder,
