@@ -171,6 +171,7 @@ export function APlayer({
       <div className="aplayer-body">
         <div
           className="aplayer-pic"
+          onClick={handlePlayButtonClick}
           style={{
             backgroundImage: `url("${playlist.currentSong?.cover}")`,
           }}
@@ -180,7 +181,6 @@ export function APlayer({
               "aplayer-button",
               audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
             )}
-            onClick={handlePlayButtonClick}
           >
             {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
           </div>
