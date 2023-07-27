@@ -1,4 +1,10 @@
+import { useCallback } from "react";
+import { clsx } from "clsx";
 import { ReactComponent as IconMenu } from "../assets/menu.svg";
+import { ReactComponent as IconPlay } from "../assets/play.svg";
+import { ReactComponent as IconPause } from "../assets/pause.svg";
+import { ReactComponent as IconSkip } from "../assets/skip.svg";
+import { ReactComponent as IconLrc } from "../assets/lrc.svg";
 import { ReactComponent as IconOrderList } from "../assets/order-list.svg";
 import { ReactComponent as IconOrderRandom } from "../assets/order-random.svg";
 import { ReactComponent as IconLoopAll } from "../assets/loop-all.svg";
@@ -6,7 +12,6 @@ import { ReactComponent as IconLoopOne } from "../assets/loop-one.svg";
 import { ReactComponent as IconLoopNone } from "../assets/loop-none.svg";
 import { formatAudioDuration } from "../utils/formatAudioDuration";
 import { ProgressBar } from "./progress";
-import React, { useCallback } from "react";
 import { PlaylistLoop, PlaylistOrder } from "../hooks/usePlaylist";
 import { Volume } from "./volume";
 
@@ -25,6 +30,12 @@ type PlaybackControlsProps = {
   loop: PlaylistLoop;
   onLoopChange: (loop: PlaylistLoop) => void;
   onSeek?: (second: number) => void;
+  isPlaying: boolean;
+  onTogglePlay?: () => void;
+  onSkipForward?: () => void;
+  onSkipBack?: () => void;
+  showLyrics?: boolean;
+  onToggleLyrics?: () => void;
 };
 
 export function PlaybackControls({
@@ -42,6 +53,12 @@ export function PlaybackControls({
   loop,
   onLoopChange,
   onSeek,
+  isPlaying,
+  onTogglePlay,
+  onSkipForward,
+  onSkipBack,
+  showLyrics = true,
+  onToggleLyrics,
 }: PlaybackControlsProps) {
   // Switch order between "list" and "random"
   const handleOrderButtonClick = useCallback(() => {
@@ -96,9 +113,18 @@ export function PlaybackControls({
             {formatAudioDuration(audioDurationSeconds)}
           </span>
         </span>
-        <span className="aplayer-icon aplayer-icon-back"></span>
-        <span className="aplayer-icon aplayer-icon-play"></span>
-        <span className="aplayer-icon aplayer-icon-forward"></span>
+        <span className="aplayer-icon aplayer-icon-back" onClick={onSkipBack}>
+          <IconSkip />
+        </span>
+        <span className="aplayer-icon aplayer-icon-play" onClick={onTogglePlay}>
+          {isPlaying ? <IconPause /> : <IconPlay />}
+        </span>
+        <span
+          className="aplayer-icon aplayer-icon-forward"
+          onClick={onSkipForward}
+        >
+          <IconSkip />
+        </span>
         <Volume
           themeColor={themeColor}
           volume={volume}
@@ -130,7 +156,15 @@ export function PlaybackControls({
         >
           <IconMenu />
         </button>
-        <button className="aplayer-icon aplayer-icon-lrc"></button>
+        <button
+          type="button"
+          className={clsx("aplayer-icon aplayer-icon-lrc", {
+            "aplayer-icon-lrc-inactivity": !showLyrics,
+          })}
+          onClick={onToggleLyrics}
+        >
+          <IconLrc />
+        </button>
       </div>
     </div>
   );

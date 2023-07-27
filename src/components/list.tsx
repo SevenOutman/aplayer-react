@@ -1,7 +1,7 @@
+import { useCallback, useEffect, useRef } from "react";
 import { clsx } from "clsx";
 import { defaultThemeColor } from "../constants";
 import type { ArtistInfo, AudioInfo } from "../types";
-import { useCallback } from "react";
 
 type PlaylistProps = {
   open: boolean;
@@ -29,8 +29,26 @@ export function Playlist({
     return artist.name ?? "Audio artist";
   }, []);
 
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (listRef.current) {
+      const listElement = listRef.current;
+
+      listElement.style.maxHeight = `${Math.min(
+        listElement.scrollHeight,
+        listMaxHeight ?? Infinity
+      )}px`;
+
+      return () => {
+        listElement.removeAttribute("style");
+      };
+    }
+  }, [listMaxHeight]);
+
   return (
     <div
+      ref={listRef}
       className={clsx("aplayer-list", {
         "aplayer-list-hide": !open,
       })}
