@@ -3,6 +3,7 @@ import { clsx } from "clsx";
 
 import { ReactComponent as IconPlay } from "../assets/play.svg";
 import { ReactComponent as IconPause } from "../assets/pause.svg";
+import { ReactComponent as IconRight } from "../assets/right.svg";
 import type { ArtistInfo, AudioInfo } from "../types";
 import { Playlist } from "./list";
 import { PlaybackControls } from "./controller";
@@ -32,6 +33,11 @@ type APlayerProps = {
   volume?: number;
 
   /**
+   * @default "normal"
+   */
+  appearance?: "normal" | "fixed";
+
+  /**
    * @default "all"
    */
   initialLoop?: PlaylistLoop;
@@ -52,6 +58,7 @@ type APlayerProps = {
 export function APlayer({
   theme = defaultThemeColor,
   audio,
+  appearance = "normal",
   volume = 0.7,
   initialLoop,
   initialOrder,
@@ -160,17 +167,42 @@ export function APlayer({
     );
   }, []);
 
+  const [mini, setMini] = useState(false);
+
+  const [displayLyrics, setDisplayLyrics] = useState(true);
+
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (appearance === "fixed") {
+      if (bodyRef.current) {
+        const bodyElement = bodyRef.current;
+        // Explicitly set width on the body element
+        // to ensure the width transition works
+        bodyElement.style.width = bodyElement.offsetWidth - 18 + "px";
+
+        return () => {
+          bodyElement.removeAttribute("style");
+        };
+      }
+    }
+  }, [appearance]);
+
   return (
     <div
       className={clsx("aplayer", {
+        "aplayer-fixed": appearance === "fixed",
         "aplayer-loading": audioControl.isLoading,
         "aplayer-withlist": hasPlaylist,
-        "aplayer-withlrc": Boolean(playlist.currentSong.lrc),
+        "aplayer-withlrc":
+          Boolean(playlist.currentSong.lrc) && appearance !== "fixed",
+        "aplayer-narrow": mini,
       })}
     >
-      <div className="aplayer-body">
+      <div ref={bodyRef} className="aplayer-body">
         <div
           className="aplayer-pic"
+          onClick={handlePlayButtonClick}
           style={{
             backgroundImage: `url("${playlist.currentSong?.cover}")`,
           }}
@@ -180,7 +212,6 @@ export function APlayer({
               "aplayer-button",
               audioControl.isPlaying ? "aplayer-pause" : "aplayer-play"
             )}
-            onClick={handlePlayButtonClick}
           >
             {audioControl.isPlaying ? <IconPause /> : <IconPlay />}
           </div>
@@ -195,10 +226,13 @@ export function APlayer({
               - {renderArtist(playlist.currentSong?.artist)}
             </span>
           </div>
-          <Lyrics
-            lrcText={playlist.currentSong.lrc}
-            currentTime={audioControl.currentTime ?? 0}
-          />
+          {appearance === "fixed" ? null : (
+            <Lyrics
+              show={displayLyrics}
+              lrcText={playlist.currentSong.lrc}
+              currentTime={audioControl.currentTime ?? 0}
+            />
+          )}
           <PlaybackControls
             volume={audioControl.volume ?? volume}
             onChangeVolume={audioControl.setVolume}
@@ -214,12 +248,33 @@ export function APlayer({
             onOrderChange={playlist.setOrder}
             loop={playlist.loop}
             onLoopChange={playlist.setLoop}
+            isPlaying={audioControl.isPlaying ?? false}
+            onTogglePlay={handlePlayButtonClick}
+            onSkipForward={() => {
+              if (playlist.hasNextSong) {
+                playlist.next();
+              }
+            }}
+            onSkipBack={() => {
+              playlist.previous();
+            }}
+            showLyrics={displayLyrics}
+            onToggleLyrics={() => {
+              setDisplayLyrics((prev) => !prev);
+            }}
           />
         </div>
         <div className="aplayer-notice" style={notice.style}>
           {notice.text}
         </div>
-        <div className="aplayer-miniswitcher"></div>
+        <div
+          className="aplayer-miniswitcher"
+          onClick={() => setMini((prev) => !prev)}
+        >
+          <button className="aplayer-icon">
+            <IconRight />
+          </button>
+        </div>
       </div>
       {hasPlaylist ? (
         <Playlist
@@ -231,6 +286,13 @@ export function APlayer({
           listMaxHeight={listMaxHeight}
         />
       ) : null}
+      {appearance === "fixed" && (
+        <Lyrics
+          show={displayLyrics}
+          lrcText={playlist.currentSong.lrc}
+          currentTime={audioControl.currentTime ?? 0}
+        />
+      )}
     </div>
   );
 }

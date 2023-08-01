@@ -62,7 +62,12 @@ function App() {
       }}
     >
       <div style={{ width: 600 }}>
-        <APlayer audio={playlist} theme="auto" initialLoop="all" />
+        <APlayer
+          audio={playlist}
+          appearance="fixed"
+          theme="auto"
+          initialLoop="all"
+        />
       </div>
     </div>
   );
