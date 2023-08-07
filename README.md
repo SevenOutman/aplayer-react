@@ -45,7 +45,7 @@ render(
 
 ## Who uses aplayer-react?
 
-- [Doma's blog](https://doma.land)
+[Doma's blog](https://doma.land) and [more](https://github.com/SevenOutman/aplayer-react/network/dependents)
 
 ## Related projects
 
