@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.0.0
     version: 1.0.0(react@18.2.0)
   aplayer-react:
-    specifier: 1.5.0
-    version: 1.5.0(react@18.2.0)
+    specifier: 1.6.0
+    version: 1.6.0(react@18.2.0)
   next:
     specifier: ^13.1.1
     version: 13.1.1(react-dom@18.2.0)(react@18.2.0)
@@ -440,8 +440,8 @@ packages:
       color-convert: 1.9.3
     dev: false
 
-  /aplayer-react@1.5.0(react@18.2.0):
-    resolution: {integrity: sha512-2E1FjCCvIBnmVgRGVJD7LPeXxCNrPhsgUb/I8UdItb9CT/vx7RQFDVNCJQBmAxl6D4m/TeBzRsL96oKrV5GrDg==}
+  /aplayer-react@1.6.0(react@18.2.0):
+    resolution: {integrity: sha512-eQpIoHzVRzpr3ePLAsj0hNABszPFJUrjS6MTRejbaH3nNM3YzgCsePEazw93KG32nspTYa23eQhDBtn9R2Qtaw==}
     peerDependencies:
       react: ^18.2.0
     dependencies:
