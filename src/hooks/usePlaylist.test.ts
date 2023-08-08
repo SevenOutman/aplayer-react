@@ -1,6 +1,10 @@
+import React from "react";
+import * as ReactDOM from "react-dom";
 import { test, expect, describe } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { PlaylistLoop, PlaylistOrder, usePlaylist } from "./usePlaylist";
+
+console.log(React.version, ReactDOM.version);
 
 const songs = [
   {
